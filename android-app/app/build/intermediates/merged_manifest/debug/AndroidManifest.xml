@@ -47,6 +47,12 @@
         <activity
             android:name="com.youpin.quickreply.ui.SettingsActivity"
             android:parentActivityName="com.youpin.quickreply.ui.ProfileActivity" />
+        <activity
+            android:name="com.youpin.quickreply.ui.TeamActivity"
+            android:parentActivityName="com.youpin.quickreply.ui.MainActivity" />
+        <activity
+            android:name="com.youpin.quickreply.ui.CategoryManageActivity"
+            android:parentActivityName="com.youpin.quickreply.ui.MainActivity" />
 
         <service
             android:name="com.youpin.quickreply.service.FloatingWindowService"

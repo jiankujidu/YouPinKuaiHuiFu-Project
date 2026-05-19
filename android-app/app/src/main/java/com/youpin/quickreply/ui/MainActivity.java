@@ -170,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
             if (itemId == R.id.nav_phrases) {
                 return true;
             } else if (itemId == R.id.nav_team) {
-                Toast.makeText(this, "团队功能开发中", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(this, TeamActivity.class));
                 return true;
             } else if (itemId == R.id.nav_profile) {
                 startActivity(new Intent(this, ProfileActivity.class));

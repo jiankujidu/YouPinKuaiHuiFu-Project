@@ -452,6 +452,94 @@ public final class CategoryDao_Impl implements CategoryDao {
   }
 
   @Override
+  public List<Category> getCategoriesByType(final String type) {
+    final String _sql = "SELECT * FROM categories WHERE type = ? ORDER BY sortOrder ASC";
+    final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 1);
+    int _argIndex = 1;
+    if (type == null) {
+      _statement.bindNull(_argIndex);
+    } else {
+      _statement.bindString(_argIndex, type);
+    }
+    __db.assertNotSuspendingTransaction();
+    final Cursor _cursor = DBUtil.query(__db, _statement, false, null);
+    try {
+      final int _cursorIndexOfId = CursorUtil.getColumnIndexOrThrow(_cursor, "id");
+      final int _cursorIndexOfName = CursorUtil.getColumnIndexOrThrow(_cursor, "name");
+      final int _cursorIndexOfType = CursorUtil.getColumnIndexOrThrow(_cursor, "type");
+      final int _cursorIndexOfParentId = CursorUtil.getColumnIndexOrThrow(_cursor, "parentId");
+      final int _cursorIndexOfSortOrder = CursorUtil.getColumnIndexOrThrow(_cursor, "sortOrder");
+      final int _cursorIndexOfColor = CursorUtil.getColumnIndexOrThrow(_cursor, "color");
+      final int _cursorIndexOfCreateTime = CursorUtil.getColumnIndexOrThrow(_cursor, "createTime");
+      final int _cursorIndexOfUpdateTime = CursorUtil.getColumnIndexOrThrow(_cursor, "updateTime");
+      final int _cursorIndexOfPhraseCount = CursorUtil.getColumnIndexOrThrow(_cursor, "phraseCount");
+      final int _cursorIndexOfExpanded = CursorUtil.getColumnIndexOrThrow(_cursor, "expanded");
+      final int _cursorIndexOfLevel = CursorUtil.getColumnIndexOrThrow(_cursor, "level");
+      final List<Category> _result = new ArrayList<Category>(_cursor.getCount());
+      while (_cursor.moveToNext()) {
+        final Category _item;
+        _item = new Category();
+        final long _tmpId;
+        _tmpId = _cursor.getLong(_cursorIndexOfId);
+        _item.setId(_tmpId);
+        final String _tmpName;
+        if (_cursor.isNull(_cursorIndexOfName)) {
+          _tmpName = null;
+        } else {
+          _tmpName = _cursor.getString(_cursorIndexOfName);
+        }
+        _item.setName(_tmpName);
+        final String _tmpType;
+        if (_cursor.isNull(_cursorIndexOfType)) {
+          _tmpType = null;
+        } else {
+          _tmpType = _cursor.getString(_cursorIndexOfType);
+        }
+        _item.setType(_tmpType);
+        final Long _tmpParentId;
+        if (_cursor.isNull(_cursorIndexOfParentId)) {
+          _tmpParentId = null;
+        } else {
+          _tmpParentId = _cursor.getLong(_cursorIndexOfParentId);
+        }
+        _item.setParentId(_tmpParentId);
+        final int _tmpSortOrder;
+        _tmpSortOrder = _cursor.getInt(_cursorIndexOfSortOrder);
+        _item.setSortOrder(_tmpSortOrder);
+        final String _tmpColor;
+        if (_cursor.isNull(_cursorIndexOfColor)) {
+          _tmpColor = null;
+        } else {
+          _tmpColor = _cursor.getString(_cursorIndexOfColor);
+        }
+        _item.setColor(_tmpColor);
+        final long _tmpCreateTime;
+        _tmpCreateTime = _cursor.getLong(_cursorIndexOfCreateTime);
+        _item.setCreateTime(_tmpCreateTime);
+        final long _tmpUpdateTime;
+        _tmpUpdateTime = _cursor.getLong(_cursorIndexOfUpdateTime);
+        _item.setUpdateTime(_tmpUpdateTime);
+        final int _tmpPhraseCount;
+        _tmpPhraseCount = _cursor.getInt(_cursorIndexOfPhraseCount);
+        _item.setPhraseCount(_tmpPhraseCount);
+        final boolean _tmpExpanded;
+        final int _tmp;
+        _tmp = _cursor.getInt(_cursorIndexOfExpanded);
+        _tmpExpanded = _tmp != 0;
+        _item.setExpanded(_tmpExpanded);
+        final int _tmpLevel;
+        _tmpLevel = _cursor.getInt(_cursorIndexOfLevel);
+        _item.setLevel(_tmpLevel);
+        _result.add(_item);
+      }
+      return _result;
+    } finally {
+      _cursor.close();
+      _statement.release();
+    }
+  }
+
+  @Override
   public int getPhraseCountByCategory(final long categoryId) {
     final String _sql = "SELECT COUNT(*) FROM phrases WHERE categoryId = ?";
     final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 1);

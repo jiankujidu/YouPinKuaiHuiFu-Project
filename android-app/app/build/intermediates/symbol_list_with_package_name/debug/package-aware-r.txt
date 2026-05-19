@@ -3192,9 +3192,13 @@ id bounceStart
 id btn_about
 id btn_add_file
 id btn_add_image
+id btn_add_level1
 id btn_back
 id btn_clear_cache
+id btn_manage_categories
 id btn_save
+id btn_save_bottom
+id btn_search
 id btn_select_category
 id btn_settings
 id buttonPanel
@@ -3278,6 +3282,7 @@ id endToStart
 id enterAlways
 id enterAlwaysCollapsed
 id et_content
+id et_name
 id et_search
 id et_title
 id exitUntilCollapsed
@@ -3525,6 +3530,8 @@ id snapMargins
 id south
 id spacer
 id special_effects_controller_view_tag
+id spinner_level1
+id spinner_level2
 id spline
 id split_action_bar
 id spread
@@ -3600,7 +3607,10 @@ id tv_category_count
 id tv_category_name
 id tv_content
 id tv_empty
+id tv_level
+id tv_name
 id tv_nickname
+id tv_parent
 id tv_title
 id tv_total_phrases
 id tv_total_usage
@@ -3613,6 +3623,7 @@ id up
 id useLogo
 id v_color_bar
 id vertical_only
+id view_indent
 id view_offset_helper
 id view_transition
 id view_tree_lifecycle_owner
@@ -3744,10 +3755,13 @@ layout abc_search_dropdown_item_icons_2line
 layout abc_search_view
 layout abc_select_dialog_material
 layout abc_tooltip
+layout activity_category_manage
 layout activity_main
 layout activity_phrase_edit
+layout activity_phrase_edit_simple
 layout activity_profile
 layout activity_settings
+layout activity_team
 layout custom_dialog
 layout design_bottom_navigation_item
 layout design_bottom_sheet_dialog
@@ -3764,8 +3778,10 @@ layout design_navigation_menu
 layout design_navigation_menu_item
 layout design_text_input_end_icon
 layout design_text_input_start_icon
+layout dialog_add_category
 layout item_category_level1
 layout item_category_level2
+layout item_category_manage
 layout item_floating_phrase
 layout item_phrase
 layout item_phrase_with_attachment

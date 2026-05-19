@@ -8,16 +8,20 @@
         "source": "com.youpin.quickreply.app-main-39:/layout/item_phrase.xml"
     },
     {
-        "merged": "com.youpin.quickreply.app-merged_res-37:/drawable_ic_close.xml.flat",
-        "source": "com.youpin.quickreply.app-main-39:/drawable/ic_close.xml"
-    },
-    {
         "merged": "com.youpin.quickreply.app-merged_res-37:/menu_bottom_nav_menu.xml.flat",
         "source": "com.youpin.quickreply.app-main-39:/menu/bottom_nav_menu.xml"
     },
     {
+        "merged": "com.youpin.quickreply.app-merged_res-37:/drawable_ic_close.xml.flat",
+        "source": "com.youpin.quickreply.app-main-39:/drawable/ic_close.xml"
+    },
+    {
         "merged": "com.youpin.quickreply.app-merged_res-37:/layout_item_floating_phrase.xml.flat",
         "source": "com.youpin.quickreply.app-main-39:/layout/item_floating_phrase.xml"
+    },
+    {
+        "merged": "com.youpin.quickreply.app-merged_res-37:/layout_activity_category_manage.xml.flat",
+        "source": "com.youpin.quickreply.app-main-39:/layout/activity_category_manage.xml"
     },
     {
         "merged": "com.youpin.quickreply.app-merged_res-37:/drawable_bg_category_tag.xml.flat",
@@ -100,12 +104,20 @@
         "source": "com.youpin.quickreply.app-main-39:/drawable/bg_input.xml"
     },
     {
+        "merged": "com.youpin.quickreply.app-merged_res-37:/layout_dialog_add_category.xml.flat",
+        "source": "com.youpin.quickreply.app-main-39:/layout/dialog_add_category.xml"
+    },
+    {
         "merged": "com.youpin.quickreply.app-merged_res-37:/drawable_bg_search.xml.flat",
         "source": "com.youpin.quickreply.app-main-39:/drawable/bg_search.xml"
     },
     {
         "merged": "com.youpin.quickreply.app-merged_res-37:/layout_layout_floating_ball.xml.flat",
         "source": "com.youpin.quickreply.app-main-39:/layout/layout_floating_ball.xml"
+    },
+    {
+        "merged": "com.youpin.quickreply.app-merged_res-37:/layout_activity_phrase_edit_simple.xml.flat",
+        "source": "com.youpin.quickreply.app-main-39:/layout/activity_phrase_edit_simple.xml"
     },
     {
         "merged": "com.youpin.quickreply.app-merged_res-37:/layout_activity_phrase_edit.xml.flat",
@@ -120,6 +132,10 @@
         "source": "com.youpin.quickreply.app-main-39:/drawable/bg_button_primary.xml"
     },
     {
+        "merged": "com.youpin.quickreply.app-merged_res-37:/layout_activity_team.xml.flat",
+        "source": "com.youpin.quickreply.app-main-39:/layout/activity_team.xml"
+    },
+    {
         "merged": "com.youpin.quickreply.app-merged_res-37:/mipmap-mdpi_ic_launcher.png.flat",
         "source": "com.youpin.quickreply.app-main-39:/mipmap-mdpi/ic_launcher.png"
     },
@@ -130,6 +146,10 @@
     {
         "merged": "com.youpin.quickreply.app-merged_res-37:/drawable_bg_circle_white.xml.flat",
         "source": "com.youpin.quickreply.app-main-39:/drawable/bg_circle_white.xml"
+    },
+    {
+        "merged": "com.youpin.quickreply.app-merged_res-37:/layout_item_category_manage.xml.flat",
+        "source": "com.youpin.quickreply.app-main-39:/layout/item_category_manage.xml"
     },
     {
         "merged": "com.youpin.quickreply.app-merged_res-37:/drawable_ic_float.xml.flat",

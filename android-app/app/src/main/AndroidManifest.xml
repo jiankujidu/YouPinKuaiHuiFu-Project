@@ -37,6 +37,14 @@
             android:name=".ui.SettingsActivity"
             android:parentActivityName=".ui.ProfileActivity" />
 
+        <activity
+            android:name=".ui.TeamActivity"
+            android:parentActivityName=".ui.MainActivity" />
+
+        <activity
+            android:name=".ui.CategoryManageActivity"
+            android:parentActivityName=".ui.MainActivity" />
+
         <service
             android:name=".service.FloatingWindowService"
             android:enabled="true"

@@ -107,14 +107,6 @@ public class FloatingWindowService extends Service {
             }
         });
         
-        floatingBall.setOnClickListener(v -> {
-            if (isExpanded) {
-                collapseWindow();
-            } else {
-                expandWindow();
-            }
-        });
-        
         floatingBall.setOnTouchListener((v, event) -> {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
@@ -131,7 +123,20 @@ public class FloatingWindowService extends Service {
                     return true;
                     
                 case MotionEvent.ACTION_UP:
-                    snapToEdge();
+                    // 判断是点击还是拖动
+                    float deltaX = event.getRawX() - initialTouchX;
+                    float deltaY = event.getRawY() - initialTouchY;
+                    if (Math.abs(deltaX) < 10 && Math.abs(deltaY) < 10) {
+                        // 点击事件
+                        if (isExpanded) {
+                            collapseWindow();
+                        } else {
+                            expandWindow();
+                        }
+                    } else {
+                        // 拖动结束，吸附到边缘
+                        snapToEdge();
+                    }
                     return true;
             }
             return false;

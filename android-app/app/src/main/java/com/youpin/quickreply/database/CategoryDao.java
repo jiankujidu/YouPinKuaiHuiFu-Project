@@ -21,6 +21,9 @@ public interface CategoryDao {
     @Query("SELECT * FROM categories WHERE type = :type ORDER BY sortOrder ASC")
     List<Category> getAllCategories(String type);
     
+    @Query("SELECT * FROM categories WHERE type = :type ORDER BY sortOrder ASC")
+    List<Category> getCategoriesByType(String type);
+    
     @Query("SELECT COUNT(*) FROM phrases WHERE categoryId = :categoryId")
     int getPhraseCountByCategory(long categoryId);
     

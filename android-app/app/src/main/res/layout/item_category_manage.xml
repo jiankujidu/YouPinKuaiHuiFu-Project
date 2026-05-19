@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:padding="12dp"
+    android:background="#FFFFFF"
+    android:layout_marginBottom="1dp">
+
+    <View
+        android:id="@+id/view_indent"
+        android:layout_width="32dp"
+        android:layout_height="1dp"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/tv_level"
+        android:layout_width="40dp"
+        android:layout_height="24dp"
+        android:gravity="center"
+        android:text="一级"
+        android:textSize="12sp"
+        android:textColor="#FFFFFF"
+        android:background="#07C160"
+        android:layout_marginEnd="12dp"/>
+
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="分类名称"
+        android:textSize="16sp"
+        android:textColor="#333333"/>
+
+    <ImageView
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:src="@android:drawable/ic_menu_more"
+        android:tint="#999999"/>
+
+</LinearLayout>
