@@ -4,13 +4,16 @@
     android:layout_width="56dp"
     android:layout_height="56dp">
 
-    <ImageView
+    <TextView
         android:id="@+id/floating_ball"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_gravity="center"
-        android:src="@android:drawable/ic_dialog_email"
         android:background="@drawable/bg_floating_ball"
-        android:padding="8dp"/>
+        android:text="快"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:gravity="center"/>
 
 </FrameLayout>
