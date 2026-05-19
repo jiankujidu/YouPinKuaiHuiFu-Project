@@ -64,12 +64,20 @@
         "source": "com.youpin.quickreply.app-main-39:/layout/activity_main.xml"
     },
     {
+        "merged": "com.youpin.quickreply.app-merged_res-37:/layout_item_category_level1.xml.flat",
+        "source": "com.youpin.quickreply.app-main-39:/layout/item_category_level1.xml"
+    },
+    {
         "merged": "com.youpin.quickreply.app-merged_res-37:/layout_activity_settings.xml.flat",
         "source": "com.youpin.quickreply.app-main-39:/layout/activity_settings.xml"
     },
     {
         "merged": "com.youpin.quickreply.app-merged_res-37:/mipmap-hdpi_ic_launcher_round.png.flat",
         "source": "com.youpin.quickreply.app-main-39:/mipmap-hdpi/ic_launcher_round.png"
+    },
+    {
+        "merged": "com.youpin.quickreply.app-merged_res-37:/layout_item_category_level2.xml.flat",
+        "source": "com.youpin.quickreply.app-main-39:/layout/item_category_level2.xml"
     },
     {
         "merged": "com.youpin.quickreply.app-merged_res-37:/drawable_ic_copy.xml.flat",
@@ -118,6 +126,10 @@
     {
         "merged": "com.youpin.quickreply.app-merged_res-37:/drawable_ic_float.xml.flat",
         "source": "com.youpin.quickreply.app-main-39:/drawable/ic_float.xml"
+    },
+    {
+        "merged": "com.youpin.quickreply.app-merged_res-37:/layout_item_phrase_with_attachment.xml.flat",
+        "source": "com.youpin.quickreply.app-main-39:/layout/item_phrase_with_attachment.xml"
     },
     {
         "merged": "com.youpin.quickreply.app-merged_res-37:/mipmap-xxhdpi_ic_launcher.png.flat",

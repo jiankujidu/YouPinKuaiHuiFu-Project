@@ -185,10 +185,10 @@ public class FloatingWindowService extends Service {
         executor.execute(() -> {
             try {
                 List<Phrase> phrases = AppDatabase.getInstance(this).phraseDao()
-                    .getPhrasesByTypeSync("private");
+                    .getPhrasesByType("private");
                 if (phrases == null || phrases.isEmpty()) {
                     phrases = AppDatabase.getInstance(this).phraseDao()
-                        .getPhrasesByTypeSync("company");
+                        .getPhrasesByType("company");
                 }
                 if (phrases == null) {
                     phrases = new ArrayList<>();
@@ -213,10 +213,10 @@ public class FloatingWindowService extends Service {
                 List<Phrase> phrases;
                 if (keyword == null || keyword.isEmpty()) {
                     phrases = AppDatabase.getInstance(this).phraseDao()
-                        .getPhrasesByTypeSync("private");
+                        .getPhrasesByType("private");
                 } else {
                     phrases = AppDatabase.getInstance(this).phraseDao()
-                        .searchPhrasesSync(keyword);
+                        .searchPhrases(keyword);
                 }
                 if (phrases == null) {
                     phrases = new ArrayList<>();

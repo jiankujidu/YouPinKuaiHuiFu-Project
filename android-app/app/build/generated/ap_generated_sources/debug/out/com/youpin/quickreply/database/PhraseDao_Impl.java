@@ -2,8 +2,6 @@ package com.youpin.quickreply.database;
 
 import android.database.Cursor;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.lifecycle.LiveData;
 import androidx.room.EntityDeletionOrUpdateAdapter;
 import androidx.room.EntityInsertionAdapter;
 import androidx.room.RoomDatabase;
@@ -14,14 +12,13 @@ import androidx.room.util.DBUtil;
 import androidx.sqlite.db.SupportSQLiteStatement;
 import com.youpin.quickreply.model.Phrase;
 import java.lang.Class;
-import java.lang.Exception;
+import java.lang.Long;
 import java.lang.Override;
 import java.lang.String;
 import java.lang.SuppressWarnings;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.Callable;
 
 @SuppressWarnings({"unchecked", "deprecation"})
 public final class PhraseDao_Impl implements PhraseDao {
@@ -43,7 +40,7 @@ public final class PhraseDao_Impl implements PhraseDao {
       @Override
       @NonNull
       protected String createQuery() {
-        return "INSERT OR ABORT INTO `phrases` (`id`,`title`,`content`,`type`,`category`,`usageCount`,`createTime`,`updateTime`) VALUES (nullif(?, 0),?,?,?,?,?,?,?)";
+        return "INSERT OR ABORT INTO `phrases` (`id`,`title`,`content`,`type`,`categoryId`,`parentCategoryId`,`usageCount`,`imagePath`,`filePath`,`fileName`,`fileSize`,`createTime`,`updateTime`,`categoryName`) VALUES (nullif(?, 0),?,?,?,?,?,?,?,?,?,?,?,?,?)";
       }
 
       @Override
@@ -64,14 +61,40 @@ public final class PhraseDao_Impl implements PhraseDao {
         } else {
           statement.bindString(4, entity.getType());
         }
-        if (entity.getCategory() == null) {
+        if (entity.getCategoryId() == null) {
           statement.bindNull(5);
         } else {
-          statement.bindString(5, entity.getCategory());
+          statement.bindLong(5, entity.getCategoryId());
         }
-        statement.bindLong(6, entity.getUsageCount());
-        statement.bindLong(7, entity.getCreateTime());
-        statement.bindLong(8, entity.getUpdateTime());
+        if (entity.getParentCategoryId() == null) {
+          statement.bindNull(6);
+        } else {
+          statement.bindLong(6, entity.getParentCategoryId());
+        }
+        statement.bindLong(7, entity.getUsageCount());
+        if (entity.getImagePath() == null) {
+          statement.bindNull(8);
+        } else {
+          statement.bindString(8, entity.getImagePath());
+        }
+        if (entity.getFilePath() == null) {
+          statement.bindNull(9);
+        } else {
+          statement.bindString(9, entity.getFilePath());
+        }
+        if (entity.getFileName() == null) {
+          statement.bindNull(10);
+        } else {
+          statement.bindString(10, entity.getFileName());
+        }
+        statement.bindLong(11, entity.getFileSize());
+        statement.bindLong(12, entity.getCreateTime());
+        statement.bindLong(13, entity.getUpdateTime());
+        if (entity.getCategoryName() == null) {
+          statement.bindNull(14);
+        } else {
+          statement.bindString(14, entity.getCategoryName());
+        }
       }
     };
     this.__deletionAdapterOfPhrase = new EntityDeletionOrUpdateAdapter<Phrase>(__db) {
@@ -90,7 +113,7 @@ public final class PhraseDao_Impl implements PhraseDao {
       @Override
       @NonNull
       protected String createQuery() {
-        return "UPDATE OR ABORT `phrases` SET `id` = ?,`title` = ?,`content` = ?,`type` = ?,`category` = ?,`usageCount` = ?,`createTime` = ?,`updateTime` = ? WHERE `id` = ?";
+        return "UPDATE OR ABORT `phrases` SET `id` = ?,`title` = ?,`content` = ?,`type` = ?,`categoryId` = ?,`parentCategoryId` = ?,`usageCount` = ?,`imagePath` = ?,`filePath` = ?,`fileName` = ?,`fileSize` = ?,`createTime` = ?,`updateTime` = ?,`categoryName` = ? WHERE `id` = ?";
       }
 
       @Override
@@ -111,15 +134,41 @@ public final class PhraseDao_Impl implements PhraseDao {
         } else {
           statement.bindString(4, entity.getType());
         }
-        if (entity.getCategory() == null) {
+        if (entity.getCategoryId() == null) {
           statement.bindNull(5);
         } else {
-          statement.bindString(5, entity.getCategory());
+          statement.bindLong(5, entity.getCategoryId());
         }
-        statement.bindLong(6, entity.getUsageCount());
-        statement.bindLong(7, entity.getCreateTime());
-        statement.bindLong(8, entity.getUpdateTime());
-        statement.bindLong(9, entity.getId());
+        if (entity.getParentCategoryId() == null) {
+          statement.bindNull(6);
+        } else {
+          statement.bindLong(6, entity.getParentCategoryId());
+        }
+        statement.bindLong(7, entity.getUsageCount());
+        if (entity.getImagePath() == null) {
+          statement.bindNull(8);
+        } else {
+          statement.bindString(8, entity.getImagePath());
+        }
+        if (entity.getFilePath() == null) {
+          statement.bindNull(9);
+        } else {
+          statement.bindString(9, entity.getFilePath());
+        }
+        if (entity.getFileName() == null) {
+          statement.bindNull(10);
+        } else {
+          statement.bindString(10, entity.getFileName());
+        }
+        statement.bindLong(11, entity.getFileSize());
+        statement.bindLong(12, entity.getCreateTime());
+        statement.bindLong(13, entity.getUpdateTime());
+        if (entity.getCategoryName() == null) {
+          statement.bindNull(14);
+        } else {
+          statement.bindString(14, entity.getCategoryName());
+        }
+        statement.bindLong(15, entity.getId());
       }
     };
     this.__preparedStmtOfDeleteById = new SharedSQLiteStatement(__db) {
@@ -216,90 +265,7 @@ public final class PhraseDao_Impl implements PhraseDao {
   }
 
   @Override
-  public LiveData<List<Phrase>> getPhrasesByType(final String type) {
-    final String _sql = "SELECT * FROM phrases WHERE type = ? ORDER BY updateTime DESC";
-    final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 1);
-    int _argIndex = 1;
-    if (type == null) {
-      _statement.bindNull(_argIndex);
-    } else {
-      _statement.bindString(_argIndex, type);
-    }
-    return __db.getInvalidationTracker().createLiveData(new String[] {"phrases"}, false, new Callable<List<Phrase>>() {
-      @Override
-      @Nullable
-      public List<Phrase> call() throws Exception {
-        final Cursor _cursor = DBUtil.query(__db, _statement, false, null);
-        try {
-          final int _cursorIndexOfId = CursorUtil.getColumnIndexOrThrow(_cursor, "id");
-          final int _cursorIndexOfTitle = CursorUtil.getColumnIndexOrThrow(_cursor, "title");
-          final int _cursorIndexOfContent = CursorUtil.getColumnIndexOrThrow(_cursor, "content");
-          final int _cursorIndexOfType = CursorUtil.getColumnIndexOrThrow(_cursor, "type");
-          final int _cursorIndexOfCategory = CursorUtil.getColumnIndexOrThrow(_cursor, "category");
-          final int _cursorIndexOfUsageCount = CursorUtil.getColumnIndexOrThrow(_cursor, "usageCount");
-          final int _cursorIndexOfCreateTime = CursorUtil.getColumnIndexOrThrow(_cursor, "createTime");
-          final int _cursorIndexOfUpdateTime = CursorUtil.getColumnIndexOrThrow(_cursor, "updateTime");
-          final List<Phrase> _result = new ArrayList<Phrase>(_cursor.getCount());
-          while (_cursor.moveToNext()) {
-            final Phrase _item;
-            _item = new Phrase();
-            final long _tmpId;
-            _tmpId = _cursor.getLong(_cursorIndexOfId);
-            _item.setId(_tmpId);
-            final String _tmpTitle;
-            if (_cursor.isNull(_cursorIndexOfTitle)) {
-              _tmpTitle = null;
-            } else {
-              _tmpTitle = _cursor.getString(_cursorIndexOfTitle);
-            }
-            _item.setTitle(_tmpTitle);
-            final String _tmpContent;
-            if (_cursor.isNull(_cursorIndexOfContent)) {
-              _tmpContent = null;
-            } else {
-              _tmpContent = _cursor.getString(_cursorIndexOfContent);
-            }
-            _item.setContent(_tmpContent);
-            final String _tmpType;
-            if (_cursor.isNull(_cursorIndexOfType)) {
-              _tmpType = null;
-            } else {
-              _tmpType = _cursor.getString(_cursorIndexOfType);
-            }
-            _item.setType(_tmpType);
-            final String _tmpCategory;
-            if (_cursor.isNull(_cursorIndexOfCategory)) {
-              _tmpCategory = null;
-            } else {
-              _tmpCategory = _cursor.getString(_cursorIndexOfCategory);
-            }
-            _item.setCategory(_tmpCategory);
-            final int _tmpUsageCount;
-            _tmpUsageCount = _cursor.getInt(_cursorIndexOfUsageCount);
-            _item.setUsageCount(_tmpUsageCount);
-            final long _tmpCreateTime;
-            _tmpCreateTime = _cursor.getLong(_cursorIndexOfCreateTime);
-            _item.setCreateTime(_tmpCreateTime);
-            final long _tmpUpdateTime;
-            _tmpUpdateTime = _cursor.getLong(_cursorIndexOfUpdateTime);
-            _item.setUpdateTime(_tmpUpdateTime);
-            _result.add(_item);
-          }
-          return _result;
-        } finally {
-          _cursor.close();
-        }
-      }
-
-      @Override
-      protected void finalize() {
-        _statement.release();
-      }
-    });
-  }
-
-  @Override
-  public List<Phrase> getPhrasesByTypeSync(final String type) {
+  public List<Phrase> getPhrasesByType(final String type) {
     final String _sql = "SELECT * FROM phrases WHERE type = ? ORDER BY updateTime DESC";
     final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 1);
     int _argIndex = 1;
@@ -315,10 +281,16 @@ public final class PhraseDao_Impl implements PhraseDao {
       final int _cursorIndexOfTitle = CursorUtil.getColumnIndexOrThrow(_cursor, "title");
       final int _cursorIndexOfContent = CursorUtil.getColumnIndexOrThrow(_cursor, "content");
       final int _cursorIndexOfType = CursorUtil.getColumnIndexOrThrow(_cursor, "type");
-      final int _cursorIndexOfCategory = CursorUtil.getColumnIndexOrThrow(_cursor, "category");
+      final int _cursorIndexOfCategoryId = CursorUtil.getColumnIndexOrThrow(_cursor, "categoryId");
+      final int _cursorIndexOfParentCategoryId = CursorUtil.getColumnIndexOrThrow(_cursor, "parentCategoryId");
       final int _cursorIndexOfUsageCount = CursorUtil.getColumnIndexOrThrow(_cursor, "usageCount");
+      final int _cursorIndexOfImagePath = CursorUtil.getColumnIndexOrThrow(_cursor, "imagePath");
+      final int _cursorIndexOfFilePath = CursorUtil.getColumnIndexOrThrow(_cursor, "filePath");
+      final int _cursorIndexOfFileName = CursorUtil.getColumnIndexOrThrow(_cursor, "fileName");
+      final int _cursorIndexOfFileSize = CursorUtil.getColumnIndexOrThrow(_cursor, "fileSize");
       final int _cursorIndexOfCreateTime = CursorUtil.getColumnIndexOrThrow(_cursor, "createTime");
       final int _cursorIndexOfUpdateTime = CursorUtil.getColumnIndexOrThrow(_cursor, "updateTime");
+      final int _cursorIndexOfCategoryName = CursorUtil.getColumnIndexOrThrow(_cursor, "categoryName");
       final List<Phrase> _result = new ArrayList<Phrase>(_cursor.getCount());
       while (_cursor.moveToNext()) {
         final Phrase _item;
@@ -347,22 +319,60 @@ public final class PhraseDao_Impl implements PhraseDao {
           _tmpType = _cursor.getString(_cursorIndexOfType);
         }
         _item.setType(_tmpType);
-        final String _tmpCategory;
-        if (_cursor.isNull(_cursorIndexOfCategory)) {
-          _tmpCategory = null;
+        final Long _tmpCategoryId;
+        if (_cursor.isNull(_cursorIndexOfCategoryId)) {
+          _tmpCategoryId = null;
         } else {
-          _tmpCategory = _cursor.getString(_cursorIndexOfCategory);
+          _tmpCategoryId = _cursor.getLong(_cursorIndexOfCategoryId);
         }
-        _item.setCategory(_tmpCategory);
+        _item.setCategoryId(_tmpCategoryId);
+        final Long _tmpParentCategoryId;
+        if (_cursor.isNull(_cursorIndexOfParentCategoryId)) {
+          _tmpParentCategoryId = null;
+        } else {
+          _tmpParentCategoryId = _cursor.getLong(_cursorIndexOfParentCategoryId);
+        }
+        _item.setParentCategoryId(_tmpParentCategoryId);
         final int _tmpUsageCount;
         _tmpUsageCount = _cursor.getInt(_cursorIndexOfUsageCount);
         _item.setUsageCount(_tmpUsageCount);
+        final String _tmpImagePath;
+        if (_cursor.isNull(_cursorIndexOfImagePath)) {
+          _tmpImagePath = null;
+        } else {
+          _tmpImagePath = _cursor.getString(_cursorIndexOfImagePath);
+        }
+        _item.setImagePath(_tmpImagePath);
+        final String _tmpFilePath;
+        if (_cursor.isNull(_cursorIndexOfFilePath)) {
+          _tmpFilePath = null;
+        } else {
+          _tmpFilePath = _cursor.getString(_cursorIndexOfFilePath);
+        }
+        _item.setFilePath(_tmpFilePath);
+        final String _tmpFileName;
+        if (_cursor.isNull(_cursorIndexOfFileName)) {
+          _tmpFileName = null;
+        } else {
+          _tmpFileName = _cursor.getString(_cursorIndexOfFileName);
+        }
+        _item.setFileName(_tmpFileName);
+        final long _tmpFileSize;
+        _tmpFileSize = _cursor.getLong(_cursorIndexOfFileSize);
+        _item.setFileSize(_tmpFileSize);
         final long _tmpCreateTime;
         _tmpCreateTime = _cursor.getLong(_cursorIndexOfCreateTime);
         _item.setCreateTime(_tmpCreateTime);
         final long _tmpUpdateTime;
         _tmpUpdateTime = _cursor.getLong(_cursorIndexOfUpdateTime);
         _item.setUpdateTime(_tmpUpdateTime);
+        final String _tmpCategoryName;
+        if (_cursor.isNull(_cursorIndexOfCategoryName)) {
+          _tmpCategoryName = null;
+        } else {
+          _tmpCategoryName = _cursor.getString(_cursorIndexOfCategoryName);
+        }
+        _item.setCategoryName(_tmpCategoryName);
         _result.add(_item);
       }
       return _result;
@@ -373,7 +383,235 @@ public final class PhraseDao_Impl implements PhraseDao {
   }
 
   @Override
-  public LiveData<List<Phrase>> searchPhrases(final String keyword) {
+  public List<Phrase> getPhrasesByCategory(final long categoryId) {
+    final String _sql = "SELECT * FROM phrases WHERE categoryId = ? ORDER BY updateTime DESC";
+    final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 1);
+    int _argIndex = 1;
+    _statement.bindLong(_argIndex, categoryId);
+    __db.assertNotSuspendingTransaction();
+    final Cursor _cursor = DBUtil.query(__db, _statement, false, null);
+    try {
+      final int _cursorIndexOfId = CursorUtil.getColumnIndexOrThrow(_cursor, "id");
+      final int _cursorIndexOfTitle = CursorUtil.getColumnIndexOrThrow(_cursor, "title");
+      final int _cursorIndexOfContent = CursorUtil.getColumnIndexOrThrow(_cursor, "content");
+      final int _cursorIndexOfType = CursorUtil.getColumnIndexOrThrow(_cursor, "type");
+      final int _cursorIndexOfCategoryId = CursorUtil.getColumnIndexOrThrow(_cursor, "categoryId");
+      final int _cursorIndexOfParentCategoryId = CursorUtil.getColumnIndexOrThrow(_cursor, "parentCategoryId");
+      final int _cursorIndexOfUsageCount = CursorUtil.getColumnIndexOrThrow(_cursor, "usageCount");
+      final int _cursorIndexOfImagePath = CursorUtil.getColumnIndexOrThrow(_cursor, "imagePath");
+      final int _cursorIndexOfFilePath = CursorUtil.getColumnIndexOrThrow(_cursor, "filePath");
+      final int _cursorIndexOfFileName = CursorUtil.getColumnIndexOrThrow(_cursor, "fileName");
+      final int _cursorIndexOfFileSize = CursorUtil.getColumnIndexOrThrow(_cursor, "fileSize");
+      final int _cursorIndexOfCreateTime = CursorUtil.getColumnIndexOrThrow(_cursor, "createTime");
+      final int _cursorIndexOfUpdateTime = CursorUtil.getColumnIndexOrThrow(_cursor, "updateTime");
+      final int _cursorIndexOfCategoryName = CursorUtil.getColumnIndexOrThrow(_cursor, "categoryName");
+      final List<Phrase> _result = new ArrayList<Phrase>(_cursor.getCount());
+      while (_cursor.moveToNext()) {
+        final Phrase _item;
+        _item = new Phrase();
+        final long _tmpId;
+        _tmpId = _cursor.getLong(_cursorIndexOfId);
+        _item.setId(_tmpId);
+        final String _tmpTitle;
+        if (_cursor.isNull(_cursorIndexOfTitle)) {
+          _tmpTitle = null;
+        } else {
+          _tmpTitle = _cursor.getString(_cursorIndexOfTitle);
+        }
+        _item.setTitle(_tmpTitle);
+        final String _tmpContent;
+        if (_cursor.isNull(_cursorIndexOfContent)) {
+          _tmpContent = null;
+        } else {
+          _tmpContent = _cursor.getString(_cursorIndexOfContent);
+        }
+        _item.setContent(_tmpContent);
+        final String _tmpType;
+        if (_cursor.isNull(_cursorIndexOfType)) {
+          _tmpType = null;
+        } else {
+          _tmpType = _cursor.getString(_cursorIndexOfType);
+        }
+        _item.setType(_tmpType);
+        final Long _tmpCategoryId;
+        if (_cursor.isNull(_cursorIndexOfCategoryId)) {
+          _tmpCategoryId = null;
+        } else {
+          _tmpCategoryId = _cursor.getLong(_cursorIndexOfCategoryId);
+        }
+        _item.setCategoryId(_tmpCategoryId);
+        final Long _tmpParentCategoryId;
+        if (_cursor.isNull(_cursorIndexOfParentCategoryId)) {
+          _tmpParentCategoryId = null;
+        } else {
+          _tmpParentCategoryId = _cursor.getLong(_cursorIndexOfParentCategoryId);
+        }
+        _item.setParentCategoryId(_tmpParentCategoryId);
+        final int _tmpUsageCount;
+        _tmpUsageCount = _cursor.getInt(_cursorIndexOfUsageCount);
+        _item.setUsageCount(_tmpUsageCount);
+        final String _tmpImagePath;
+        if (_cursor.isNull(_cursorIndexOfImagePath)) {
+          _tmpImagePath = null;
+        } else {
+          _tmpImagePath = _cursor.getString(_cursorIndexOfImagePath);
+        }
+        _item.setImagePath(_tmpImagePath);
+        final String _tmpFilePath;
+        if (_cursor.isNull(_cursorIndexOfFilePath)) {
+          _tmpFilePath = null;
+        } else {
+          _tmpFilePath = _cursor.getString(_cursorIndexOfFilePath);
+        }
+        _item.setFilePath(_tmpFilePath);
+        final String _tmpFileName;
+        if (_cursor.isNull(_cursorIndexOfFileName)) {
+          _tmpFileName = null;
+        } else {
+          _tmpFileName = _cursor.getString(_cursorIndexOfFileName);
+        }
+        _item.setFileName(_tmpFileName);
+        final long _tmpFileSize;
+        _tmpFileSize = _cursor.getLong(_cursorIndexOfFileSize);
+        _item.setFileSize(_tmpFileSize);
+        final long _tmpCreateTime;
+        _tmpCreateTime = _cursor.getLong(_cursorIndexOfCreateTime);
+        _item.setCreateTime(_tmpCreateTime);
+        final long _tmpUpdateTime;
+        _tmpUpdateTime = _cursor.getLong(_cursorIndexOfUpdateTime);
+        _item.setUpdateTime(_tmpUpdateTime);
+        final String _tmpCategoryName;
+        if (_cursor.isNull(_cursorIndexOfCategoryName)) {
+          _tmpCategoryName = null;
+        } else {
+          _tmpCategoryName = _cursor.getString(_cursorIndexOfCategoryName);
+        }
+        _item.setCategoryName(_tmpCategoryName);
+        _result.add(_item);
+      }
+      return _result;
+    } finally {
+      _cursor.close();
+      _statement.release();
+    }
+  }
+
+  @Override
+  public List<Phrase> getPhrasesByParentCategory(final long parentId) {
+    final String _sql = "SELECT * FROM phrases WHERE parentCategoryId = ? ORDER BY updateTime DESC";
+    final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 1);
+    int _argIndex = 1;
+    _statement.bindLong(_argIndex, parentId);
+    __db.assertNotSuspendingTransaction();
+    final Cursor _cursor = DBUtil.query(__db, _statement, false, null);
+    try {
+      final int _cursorIndexOfId = CursorUtil.getColumnIndexOrThrow(_cursor, "id");
+      final int _cursorIndexOfTitle = CursorUtil.getColumnIndexOrThrow(_cursor, "title");
+      final int _cursorIndexOfContent = CursorUtil.getColumnIndexOrThrow(_cursor, "content");
+      final int _cursorIndexOfType = CursorUtil.getColumnIndexOrThrow(_cursor, "type");
+      final int _cursorIndexOfCategoryId = CursorUtil.getColumnIndexOrThrow(_cursor, "categoryId");
+      final int _cursorIndexOfParentCategoryId = CursorUtil.getColumnIndexOrThrow(_cursor, "parentCategoryId");
+      final int _cursorIndexOfUsageCount = CursorUtil.getColumnIndexOrThrow(_cursor, "usageCount");
+      final int _cursorIndexOfImagePath = CursorUtil.getColumnIndexOrThrow(_cursor, "imagePath");
+      final int _cursorIndexOfFilePath = CursorUtil.getColumnIndexOrThrow(_cursor, "filePath");
+      final int _cursorIndexOfFileName = CursorUtil.getColumnIndexOrThrow(_cursor, "fileName");
+      final int _cursorIndexOfFileSize = CursorUtil.getColumnIndexOrThrow(_cursor, "fileSize");
+      final int _cursorIndexOfCreateTime = CursorUtil.getColumnIndexOrThrow(_cursor, "createTime");
+      final int _cursorIndexOfUpdateTime = CursorUtil.getColumnIndexOrThrow(_cursor, "updateTime");
+      final int _cursorIndexOfCategoryName = CursorUtil.getColumnIndexOrThrow(_cursor, "categoryName");
+      final List<Phrase> _result = new ArrayList<Phrase>(_cursor.getCount());
+      while (_cursor.moveToNext()) {
+        final Phrase _item;
+        _item = new Phrase();
+        final long _tmpId;
+        _tmpId = _cursor.getLong(_cursorIndexOfId);
+        _item.setId(_tmpId);
+        final String _tmpTitle;
+        if (_cursor.isNull(_cursorIndexOfTitle)) {
+          _tmpTitle = null;
+        } else {
+          _tmpTitle = _cursor.getString(_cursorIndexOfTitle);
+        }
+        _item.setTitle(_tmpTitle);
+        final String _tmpContent;
+        if (_cursor.isNull(_cursorIndexOfContent)) {
+          _tmpContent = null;
+        } else {
+          _tmpContent = _cursor.getString(_cursorIndexOfContent);
+        }
+        _item.setContent(_tmpContent);
+        final String _tmpType;
+        if (_cursor.isNull(_cursorIndexOfType)) {
+          _tmpType = null;
+        } else {
+          _tmpType = _cursor.getString(_cursorIndexOfType);
+        }
+        _item.setType(_tmpType);
+        final Long _tmpCategoryId;
+        if (_cursor.isNull(_cursorIndexOfCategoryId)) {
+          _tmpCategoryId = null;
+        } else {
+          _tmpCategoryId = _cursor.getLong(_cursorIndexOfCategoryId);
+        }
+        _item.setCategoryId(_tmpCategoryId);
+        final Long _tmpParentCategoryId;
+        if (_cursor.isNull(_cursorIndexOfParentCategoryId)) {
+          _tmpParentCategoryId = null;
+        } else {
+          _tmpParentCategoryId = _cursor.getLong(_cursorIndexOfParentCategoryId);
+        }
+        _item.setParentCategoryId(_tmpParentCategoryId);
+        final int _tmpUsageCount;
+        _tmpUsageCount = _cursor.getInt(_cursorIndexOfUsageCount);
+        _item.setUsageCount(_tmpUsageCount);
+        final String _tmpImagePath;
+        if (_cursor.isNull(_cursorIndexOfImagePath)) {
+          _tmpImagePath = null;
+        } else {
+          _tmpImagePath = _cursor.getString(_cursorIndexOfImagePath);
+        }
+        _item.setImagePath(_tmpImagePath);
+        final String _tmpFilePath;
+        if (_cursor.isNull(_cursorIndexOfFilePath)) {
+          _tmpFilePath = null;
+        } else {
+          _tmpFilePath = _cursor.getString(_cursorIndexOfFilePath);
+        }
+        _item.setFilePath(_tmpFilePath);
+        final String _tmpFileName;
+        if (_cursor.isNull(_cursorIndexOfFileName)) {
+          _tmpFileName = null;
+        } else {
+          _tmpFileName = _cursor.getString(_cursorIndexOfFileName);
+        }
+        _item.setFileName(_tmpFileName);
+        final long _tmpFileSize;
+        _tmpFileSize = _cursor.getLong(_cursorIndexOfFileSize);
+        _item.setFileSize(_tmpFileSize);
+        final long _tmpCreateTime;
+        _tmpCreateTime = _cursor.getLong(_cursorIndexOfCreateTime);
+        _item.setCreateTime(_tmpCreateTime);
+        final long _tmpUpdateTime;
+        _tmpUpdateTime = _cursor.getLong(_cursorIndexOfUpdateTime);
+        _item.setUpdateTime(_tmpUpdateTime);
+        final String _tmpCategoryName;
+        if (_cursor.isNull(_cursorIndexOfCategoryName)) {
+          _tmpCategoryName = null;
+        } else {
+          _tmpCategoryName = _cursor.getString(_cursorIndexOfCategoryName);
+        }
+        _item.setCategoryName(_tmpCategoryName);
+        _result.add(_item);
+      }
+      return _result;
+    } finally {
+      _cursor.close();
+      _statement.release();
+    }
+  }
+
+  @Override
+  public List<Phrase> searchPhrases(final String keyword) {
     final String _sql = "SELECT * FROM phrases WHERE title LIKE '%' || ? || '%' OR content LIKE '%' || ? || '%' ORDER BY updateTime DESC";
     final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 2);
     int _argIndex = 1;
@@ -388,81 +626,116 @@ public final class PhraseDao_Impl implements PhraseDao {
     } else {
       _statement.bindString(_argIndex, keyword);
     }
-    return __db.getInvalidationTracker().createLiveData(new String[] {"phrases"}, false, new Callable<List<Phrase>>() {
-      @Override
-      @Nullable
-      public List<Phrase> call() throws Exception {
-        final Cursor _cursor = DBUtil.query(__db, _statement, false, null);
-        try {
-          final int _cursorIndexOfId = CursorUtil.getColumnIndexOrThrow(_cursor, "id");
-          final int _cursorIndexOfTitle = CursorUtil.getColumnIndexOrThrow(_cursor, "title");
-          final int _cursorIndexOfContent = CursorUtil.getColumnIndexOrThrow(_cursor, "content");
-          final int _cursorIndexOfType = CursorUtil.getColumnIndexOrThrow(_cursor, "type");
-          final int _cursorIndexOfCategory = CursorUtil.getColumnIndexOrThrow(_cursor, "category");
-          final int _cursorIndexOfUsageCount = CursorUtil.getColumnIndexOrThrow(_cursor, "usageCount");
-          final int _cursorIndexOfCreateTime = CursorUtil.getColumnIndexOrThrow(_cursor, "createTime");
-          final int _cursorIndexOfUpdateTime = CursorUtil.getColumnIndexOrThrow(_cursor, "updateTime");
-          final List<Phrase> _result = new ArrayList<Phrase>(_cursor.getCount());
-          while (_cursor.moveToNext()) {
-            final Phrase _item;
-            _item = new Phrase();
-            final long _tmpId;
-            _tmpId = _cursor.getLong(_cursorIndexOfId);
-            _item.setId(_tmpId);
-            final String _tmpTitle;
-            if (_cursor.isNull(_cursorIndexOfTitle)) {
-              _tmpTitle = null;
-            } else {
-              _tmpTitle = _cursor.getString(_cursorIndexOfTitle);
-            }
-            _item.setTitle(_tmpTitle);
-            final String _tmpContent;
-            if (_cursor.isNull(_cursorIndexOfContent)) {
-              _tmpContent = null;
-            } else {
-              _tmpContent = _cursor.getString(_cursorIndexOfContent);
-            }
-            _item.setContent(_tmpContent);
-            final String _tmpType;
-            if (_cursor.isNull(_cursorIndexOfType)) {
-              _tmpType = null;
-            } else {
-              _tmpType = _cursor.getString(_cursorIndexOfType);
-            }
-            _item.setType(_tmpType);
-            final String _tmpCategory;
-            if (_cursor.isNull(_cursorIndexOfCategory)) {
-              _tmpCategory = null;
-            } else {
-              _tmpCategory = _cursor.getString(_cursorIndexOfCategory);
-            }
-            _item.setCategory(_tmpCategory);
-            final int _tmpUsageCount;
-            _tmpUsageCount = _cursor.getInt(_cursorIndexOfUsageCount);
-            _item.setUsageCount(_tmpUsageCount);
-            final long _tmpCreateTime;
-            _tmpCreateTime = _cursor.getLong(_cursorIndexOfCreateTime);
-            _item.setCreateTime(_tmpCreateTime);
-            final long _tmpUpdateTime;
-            _tmpUpdateTime = _cursor.getLong(_cursorIndexOfUpdateTime);
-            _item.setUpdateTime(_tmpUpdateTime);
-            _result.add(_item);
-          }
-          return _result;
-        } finally {
-          _cursor.close();
+    __db.assertNotSuspendingTransaction();
+    final Cursor _cursor = DBUtil.query(__db, _statement, false, null);
+    try {
+      final int _cursorIndexOfId = CursorUtil.getColumnIndexOrThrow(_cursor, "id");
+      final int _cursorIndexOfTitle = CursorUtil.getColumnIndexOrThrow(_cursor, "title");
+      final int _cursorIndexOfContent = CursorUtil.getColumnIndexOrThrow(_cursor, "content");
+      final int _cursorIndexOfType = CursorUtil.getColumnIndexOrThrow(_cursor, "type");
+      final int _cursorIndexOfCategoryId = CursorUtil.getColumnIndexOrThrow(_cursor, "categoryId");
+      final int _cursorIndexOfParentCategoryId = CursorUtil.getColumnIndexOrThrow(_cursor, "parentCategoryId");
+      final int _cursorIndexOfUsageCount = CursorUtil.getColumnIndexOrThrow(_cursor, "usageCount");
+      final int _cursorIndexOfImagePath = CursorUtil.getColumnIndexOrThrow(_cursor, "imagePath");
+      final int _cursorIndexOfFilePath = CursorUtil.getColumnIndexOrThrow(_cursor, "filePath");
+      final int _cursorIndexOfFileName = CursorUtil.getColumnIndexOrThrow(_cursor, "fileName");
+      final int _cursorIndexOfFileSize = CursorUtil.getColumnIndexOrThrow(_cursor, "fileSize");
+      final int _cursorIndexOfCreateTime = CursorUtil.getColumnIndexOrThrow(_cursor, "createTime");
+      final int _cursorIndexOfUpdateTime = CursorUtil.getColumnIndexOrThrow(_cursor, "updateTime");
+      final int _cursorIndexOfCategoryName = CursorUtil.getColumnIndexOrThrow(_cursor, "categoryName");
+      final List<Phrase> _result = new ArrayList<Phrase>(_cursor.getCount());
+      while (_cursor.moveToNext()) {
+        final Phrase _item;
+        _item = new Phrase();
+        final long _tmpId;
+        _tmpId = _cursor.getLong(_cursorIndexOfId);
+        _item.setId(_tmpId);
+        final String _tmpTitle;
+        if (_cursor.isNull(_cursorIndexOfTitle)) {
+          _tmpTitle = null;
+        } else {
+          _tmpTitle = _cursor.getString(_cursorIndexOfTitle);
         }
+        _item.setTitle(_tmpTitle);
+        final String _tmpContent;
+        if (_cursor.isNull(_cursorIndexOfContent)) {
+          _tmpContent = null;
+        } else {
+          _tmpContent = _cursor.getString(_cursorIndexOfContent);
+        }
+        _item.setContent(_tmpContent);
+        final String _tmpType;
+        if (_cursor.isNull(_cursorIndexOfType)) {
+          _tmpType = null;
+        } else {
+          _tmpType = _cursor.getString(_cursorIndexOfType);
+        }
+        _item.setType(_tmpType);
+        final Long _tmpCategoryId;
+        if (_cursor.isNull(_cursorIndexOfCategoryId)) {
+          _tmpCategoryId = null;
+        } else {
+          _tmpCategoryId = _cursor.getLong(_cursorIndexOfCategoryId);
+        }
+        _item.setCategoryId(_tmpCategoryId);
+        final Long _tmpParentCategoryId;
+        if (_cursor.isNull(_cursorIndexOfParentCategoryId)) {
+          _tmpParentCategoryId = null;
+        } else {
+          _tmpParentCategoryId = _cursor.getLong(_cursorIndexOfParentCategoryId);
+        }
+        _item.setParentCategoryId(_tmpParentCategoryId);
+        final int _tmpUsageCount;
+        _tmpUsageCount = _cursor.getInt(_cursorIndexOfUsageCount);
+        _item.setUsageCount(_tmpUsageCount);
+        final String _tmpImagePath;
+        if (_cursor.isNull(_cursorIndexOfImagePath)) {
+          _tmpImagePath = null;
+        } else {
+          _tmpImagePath = _cursor.getString(_cursorIndexOfImagePath);
+        }
+        _item.setImagePath(_tmpImagePath);
+        final String _tmpFilePath;
+        if (_cursor.isNull(_cursorIndexOfFilePath)) {
+          _tmpFilePath = null;
+        } else {
+          _tmpFilePath = _cursor.getString(_cursorIndexOfFilePath);
+        }
+        _item.setFilePath(_tmpFilePath);
+        final String _tmpFileName;
+        if (_cursor.isNull(_cursorIndexOfFileName)) {
+          _tmpFileName = null;
+        } else {
+          _tmpFileName = _cursor.getString(_cursorIndexOfFileName);
+        }
+        _item.setFileName(_tmpFileName);
+        final long _tmpFileSize;
+        _tmpFileSize = _cursor.getLong(_cursorIndexOfFileSize);
+        _item.setFileSize(_tmpFileSize);
+        final long _tmpCreateTime;
+        _tmpCreateTime = _cursor.getLong(_cursorIndexOfCreateTime);
+        _item.setCreateTime(_tmpCreateTime);
+        final long _tmpUpdateTime;
+        _tmpUpdateTime = _cursor.getLong(_cursorIndexOfUpdateTime);
+        _item.setUpdateTime(_tmpUpdateTime);
+        final String _tmpCategoryName;
+        if (_cursor.isNull(_cursorIndexOfCategoryName)) {
+          _tmpCategoryName = null;
+        } else {
+          _tmpCategoryName = _cursor.getString(_cursorIndexOfCategoryName);
+        }
+        _item.setCategoryName(_tmpCategoryName);
+        _result.add(_item);
       }
-
-      @Override
-      protected void finalize() {
-        _statement.release();
-      }
-    });
+      return _result;
+    } finally {
+      _cursor.close();
+      _statement.release();
+    }
   }
 
   @Override
-  public LiveData<List<Phrase>> searchPhrasesByType(final String type, final String keyword) {
+  public List<Phrase> searchPhrasesByType(final String type, final String keyword) {
     final String _sql = "SELECT * FROM phrases WHERE type = ? AND (title LIKE '%' || ? || '%' OR content LIKE '%' || ? || '%') ORDER BY updateTime DESC";
     final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 3);
     int _argIndex = 1;
@@ -483,77 +756,238 @@ public final class PhraseDao_Impl implements PhraseDao {
     } else {
       _statement.bindString(_argIndex, keyword);
     }
-    return __db.getInvalidationTracker().createLiveData(new String[] {"phrases"}, false, new Callable<List<Phrase>>() {
-      @Override
-      @Nullable
-      public List<Phrase> call() throws Exception {
-        final Cursor _cursor = DBUtil.query(__db, _statement, false, null);
-        try {
-          final int _cursorIndexOfId = CursorUtil.getColumnIndexOrThrow(_cursor, "id");
-          final int _cursorIndexOfTitle = CursorUtil.getColumnIndexOrThrow(_cursor, "title");
-          final int _cursorIndexOfContent = CursorUtil.getColumnIndexOrThrow(_cursor, "content");
-          final int _cursorIndexOfType = CursorUtil.getColumnIndexOrThrow(_cursor, "type");
-          final int _cursorIndexOfCategory = CursorUtil.getColumnIndexOrThrow(_cursor, "category");
-          final int _cursorIndexOfUsageCount = CursorUtil.getColumnIndexOrThrow(_cursor, "usageCount");
-          final int _cursorIndexOfCreateTime = CursorUtil.getColumnIndexOrThrow(_cursor, "createTime");
-          final int _cursorIndexOfUpdateTime = CursorUtil.getColumnIndexOrThrow(_cursor, "updateTime");
-          final List<Phrase> _result = new ArrayList<Phrase>(_cursor.getCount());
-          while (_cursor.moveToNext()) {
-            final Phrase _item;
-            _item = new Phrase();
-            final long _tmpId;
-            _tmpId = _cursor.getLong(_cursorIndexOfId);
-            _item.setId(_tmpId);
-            final String _tmpTitle;
-            if (_cursor.isNull(_cursorIndexOfTitle)) {
-              _tmpTitle = null;
-            } else {
-              _tmpTitle = _cursor.getString(_cursorIndexOfTitle);
-            }
-            _item.setTitle(_tmpTitle);
-            final String _tmpContent;
-            if (_cursor.isNull(_cursorIndexOfContent)) {
-              _tmpContent = null;
-            } else {
-              _tmpContent = _cursor.getString(_cursorIndexOfContent);
-            }
-            _item.setContent(_tmpContent);
-            final String _tmpType;
-            if (_cursor.isNull(_cursorIndexOfType)) {
-              _tmpType = null;
-            } else {
-              _tmpType = _cursor.getString(_cursorIndexOfType);
-            }
-            _item.setType(_tmpType);
-            final String _tmpCategory;
-            if (_cursor.isNull(_cursorIndexOfCategory)) {
-              _tmpCategory = null;
-            } else {
-              _tmpCategory = _cursor.getString(_cursorIndexOfCategory);
-            }
-            _item.setCategory(_tmpCategory);
-            final int _tmpUsageCount;
-            _tmpUsageCount = _cursor.getInt(_cursorIndexOfUsageCount);
-            _item.setUsageCount(_tmpUsageCount);
-            final long _tmpCreateTime;
-            _tmpCreateTime = _cursor.getLong(_cursorIndexOfCreateTime);
-            _item.setCreateTime(_tmpCreateTime);
-            final long _tmpUpdateTime;
-            _tmpUpdateTime = _cursor.getLong(_cursorIndexOfUpdateTime);
-            _item.setUpdateTime(_tmpUpdateTime);
-            _result.add(_item);
-          }
-          return _result;
-        } finally {
-          _cursor.close();
+    __db.assertNotSuspendingTransaction();
+    final Cursor _cursor = DBUtil.query(__db, _statement, false, null);
+    try {
+      final int _cursorIndexOfId = CursorUtil.getColumnIndexOrThrow(_cursor, "id");
+      final int _cursorIndexOfTitle = CursorUtil.getColumnIndexOrThrow(_cursor, "title");
+      final int _cursorIndexOfContent = CursorUtil.getColumnIndexOrThrow(_cursor, "content");
+      final int _cursorIndexOfType = CursorUtil.getColumnIndexOrThrow(_cursor, "type");
+      final int _cursorIndexOfCategoryId = CursorUtil.getColumnIndexOrThrow(_cursor, "categoryId");
+      final int _cursorIndexOfParentCategoryId = CursorUtil.getColumnIndexOrThrow(_cursor, "parentCategoryId");
+      final int _cursorIndexOfUsageCount = CursorUtil.getColumnIndexOrThrow(_cursor, "usageCount");
+      final int _cursorIndexOfImagePath = CursorUtil.getColumnIndexOrThrow(_cursor, "imagePath");
+      final int _cursorIndexOfFilePath = CursorUtil.getColumnIndexOrThrow(_cursor, "filePath");
+      final int _cursorIndexOfFileName = CursorUtil.getColumnIndexOrThrow(_cursor, "fileName");
+      final int _cursorIndexOfFileSize = CursorUtil.getColumnIndexOrThrow(_cursor, "fileSize");
+      final int _cursorIndexOfCreateTime = CursorUtil.getColumnIndexOrThrow(_cursor, "createTime");
+      final int _cursorIndexOfUpdateTime = CursorUtil.getColumnIndexOrThrow(_cursor, "updateTime");
+      final int _cursorIndexOfCategoryName = CursorUtil.getColumnIndexOrThrow(_cursor, "categoryName");
+      final List<Phrase> _result = new ArrayList<Phrase>(_cursor.getCount());
+      while (_cursor.moveToNext()) {
+        final Phrase _item;
+        _item = new Phrase();
+        final long _tmpId;
+        _tmpId = _cursor.getLong(_cursorIndexOfId);
+        _item.setId(_tmpId);
+        final String _tmpTitle;
+        if (_cursor.isNull(_cursorIndexOfTitle)) {
+          _tmpTitle = null;
+        } else {
+          _tmpTitle = _cursor.getString(_cursorIndexOfTitle);
         }
+        _item.setTitle(_tmpTitle);
+        final String _tmpContent;
+        if (_cursor.isNull(_cursorIndexOfContent)) {
+          _tmpContent = null;
+        } else {
+          _tmpContent = _cursor.getString(_cursorIndexOfContent);
+        }
+        _item.setContent(_tmpContent);
+        final String _tmpType;
+        if (_cursor.isNull(_cursorIndexOfType)) {
+          _tmpType = null;
+        } else {
+          _tmpType = _cursor.getString(_cursorIndexOfType);
+        }
+        _item.setType(_tmpType);
+        final Long _tmpCategoryId;
+        if (_cursor.isNull(_cursorIndexOfCategoryId)) {
+          _tmpCategoryId = null;
+        } else {
+          _tmpCategoryId = _cursor.getLong(_cursorIndexOfCategoryId);
+        }
+        _item.setCategoryId(_tmpCategoryId);
+        final Long _tmpParentCategoryId;
+        if (_cursor.isNull(_cursorIndexOfParentCategoryId)) {
+          _tmpParentCategoryId = null;
+        } else {
+          _tmpParentCategoryId = _cursor.getLong(_cursorIndexOfParentCategoryId);
+        }
+        _item.setParentCategoryId(_tmpParentCategoryId);
+        final int _tmpUsageCount;
+        _tmpUsageCount = _cursor.getInt(_cursorIndexOfUsageCount);
+        _item.setUsageCount(_tmpUsageCount);
+        final String _tmpImagePath;
+        if (_cursor.isNull(_cursorIndexOfImagePath)) {
+          _tmpImagePath = null;
+        } else {
+          _tmpImagePath = _cursor.getString(_cursorIndexOfImagePath);
+        }
+        _item.setImagePath(_tmpImagePath);
+        final String _tmpFilePath;
+        if (_cursor.isNull(_cursorIndexOfFilePath)) {
+          _tmpFilePath = null;
+        } else {
+          _tmpFilePath = _cursor.getString(_cursorIndexOfFilePath);
+        }
+        _item.setFilePath(_tmpFilePath);
+        final String _tmpFileName;
+        if (_cursor.isNull(_cursorIndexOfFileName)) {
+          _tmpFileName = null;
+        } else {
+          _tmpFileName = _cursor.getString(_cursorIndexOfFileName);
+        }
+        _item.setFileName(_tmpFileName);
+        final long _tmpFileSize;
+        _tmpFileSize = _cursor.getLong(_cursorIndexOfFileSize);
+        _item.setFileSize(_tmpFileSize);
+        final long _tmpCreateTime;
+        _tmpCreateTime = _cursor.getLong(_cursorIndexOfCreateTime);
+        _item.setCreateTime(_tmpCreateTime);
+        final long _tmpUpdateTime;
+        _tmpUpdateTime = _cursor.getLong(_cursorIndexOfUpdateTime);
+        _item.setUpdateTime(_tmpUpdateTime);
+        final String _tmpCategoryName;
+        if (_cursor.isNull(_cursorIndexOfCategoryName)) {
+          _tmpCategoryName = null;
+        } else {
+          _tmpCategoryName = _cursor.getString(_cursorIndexOfCategoryName);
+        }
+        _item.setCategoryName(_tmpCategoryName);
+        _result.add(_item);
       }
+      return _result;
+    } finally {
+      _cursor.close();
+      _statement.release();
+    }
+  }
 
-      @Override
-      protected void finalize() {
-        _statement.release();
+  @Override
+  public List<Phrase> searchPhrasesByCategory(final long categoryId, final String keyword) {
+    final String _sql = "SELECT * FROM phrases WHERE categoryId = ? AND (title LIKE '%' || ? || '%' OR content LIKE '%' || ? || '%') ORDER BY updateTime DESC";
+    final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 3);
+    int _argIndex = 1;
+    _statement.bindLong(_argIndex, categoryId);
+    _argIndex = 2;
+    if (keyword == null) {
+      _statement.bindNull(_argIndex);
+    } else {
+      _statement.bindString(_argIndex, keyword);
+    }
+    _argIndex = 3;
+    if (keyword == null) {
+      _statement.bindNull(_argIndex);
+    } else {
+      _statement.bindString(_argIndex, keyword);
+    }
+    __db.assertNotSuspendingTransaction();
+    final Cursor _cursor = DBUtil.query(__db, _statement, false, null);
+    try {
+      final int _cursorIndexOfId = CursorUtil.getColumnIndexOrThrow(_cursor, "id");
+      final int _cursorIndexOfTitle = CursorUtil.getColumnIndexOrThrow(_cursor, "title");
+      final int _cursorIndexOfContent = CursorUtil.getColumnIndexOrThrow(_cursor, "content");
+      final int _cursorIndexOfType = CursorUtil.getColumnIndexOrThrow(_cursor, "type");
+      final int _cursorIndexOfCategoryId = CursorUtil.getColumnIndexOrThrow(_cursor, "categoryId");
+      final int _cursorIndexOfParentCategoryId = CursorUtil.getColumnIndexOrThrow(_cursor, "parentCategoryId");
+      final int _cursorIndexOfUsageCount = CursorUtil.getColumnIndexOrThrow(_cursor, "usageCount");
+      final int _cursorIndexOfImagePath = CursorUtil.getColumnIndexOrThrow(_cursor, "imagePath");
+      final int _cursorIndexOfFilePath = CursorUtil.getColumnIndexOrThrow(_cursor, "filePath");
+      final int _cursorIndexOfFileName = CursorUtil.getColumnIndexOrThrow(_cursor, "fileName");
+      final int _cursorIndexOfFileSize = CursorUtil.getColumnIndexOrThrow(_cursor, "fileSize");
+      final int _cursorIndexOfCreateTime = CursorUtil.getColumnIndexOrThrow(_cursor, "createTime");
+      final int _cursorIndexOfUpdateTime = CursorUtil.getColumnIndexOrThrow(_cursor, "updateTime");
+      final int _cursorIndexOfCategoryName = CursorUtil.getColumnIndexOrThrow(_cursor, "categoryName");
+      final List<Phrase> _result = new ArrayList<Phrase>(_cursor.getCount());
+      while (_cursor.moveToNext()) {
+        final Phrase _item;
+        _item = new Phrase();
+        final long _tmpId;
+        _tmpId = _cursor.getLong(_cursorIndexOfId);
+        _item.setId(_tmpId);
+        final String _tmpTitle;
+        if (_cursor.isNull(_cursorIndexOfTitle)) {
+          _tmpTitle = null;
+        } else {
+          _tmpTitle = _cursor.getString(_cursorIndexOfTitle);
+        }
+        _item.setTitle(_tmpTitle);
+        final String _tmpContent;
+        if (_cursor.isNull(_cursorIndexOfContent)) {
+          _tmpContent = null;
+        } else {
+          _tmpContent = _cursor.getString(_cursorIndexOfContent);
+        }
+        _item.setContent(_tmpContent);
+        final String _tmpType;
+        if (_cursor.isNull(_cursorIndexOfType)) {
+          _tmpType = null;
+        } else {
+          _tmpType = _cursor.getString(_cursorIndexOfType);
+        }
+        _item.setType(_tmpType);
+        final Long _tmpCategoryId;
+        if (_cursor.isNull(_cursorIndexOfCategoryId)) {
+          _tmpCategoryId = null;
+        } else {
+          _tmpCategoryId = _cursor.getLong(_cursorIndexOfCategoryId);
+        }
+        _item.setCategoryId(_tmpCategoryId);
+        final Long _tmpParentCategoryId;
+        if (_cursor.isNull(_cursorIndexOfParentCategoryId)) {
+          _tmpParentCategoryId = null;
+        } else {
+          _tmpParentCategoryId = _cursor.getLong(_cursorIndexOfParentCategoryId);
+        }
+        _item.setParentCategoryId(_tmpParentCategoryId);
+        final int _tmpUsageCount;
+        _tmpUsageCount = _cursor.getInt(_cursorIndexOfUsageCount);
+        _item.setUsageCount(_tmpUsageCount);
+        final String _tmpImagePath;
+        if (_cursor.isNull(_cursorIndexOfImagePath)) {
+          _tmpImagePath = null;
+        } else {
+          _tmpImagePath = _cursor.getString(_cursorIndexOfImagePath);
+        }
+        _item.setImagePath(_tmpImagePath);
+        final String _tmpFilePath;
+        if (_cursor.isNull(_cursorIndexOfFilePath)) {
+          _tmpFilePath = null;
+        } else {
+          _tmpFilePath = _cursor.getString(_cursorIndexOfFilePath);
+        }
+        _item.setFilePath(_tmpFilePath);
+        final String _tmpFileName;
+        if (_cursor.isNull(_cursorIndexOfFileName)) {
+          _tmpFileName = null;
+        } else {
+          _tmpFileName = _cursor.getString(_cursorIndexOfFileName);
+        }
+        _item.setFileName(_tmpFileName);
+        final long _tmpFileSize;
+        _tmpFileSize = _cursor.getLong(_cursorIndexOfFileSize);
+        _item.setFileSize(_tmpFileSize);
+        final long _tmpCreateTime;
+        _tmpCreateTime = _cursor.getLong(_cursorIndexOfCreateTime);
+        _item.setCreateTime(_tmpCreateTime);
+        final long _tmpUpdateTime;
+        _tmpUpdateTime = _cursor.getLong(_cursorIndexOfUpdateTime);
+        _item.setUpdateTime(_tmpUpdateTime);
+        final String _tmpCategoryName;
+        if (_cursor.isNull(_cursorIndexOfCategoryName)) {
+          _tmpCategoryName = null;
+        } else {
+          _tmpCategoryName = _cursor.getString(_cursorIndexOfCategoryName);
+        }
+        _item.setCategoryName(_tmpCategoryName);
+        _result.add(_item);
       }
-    });
+      return _result;
+    } finally {
+      _cursor.close();
+      _statement.release();
+    }
   }
 
   @Override
@@ -569,10 +1003,16 @@ public final class PhraseDao_Impl implements PhraseDao {
       final int _cursorIndexOfTitle = CursorUtil.getColumnIndexOrThrow(_cursor, "title");
       final int _cursorIndexOfContent = CursorUtil.getColumnIndexOrThrow(_cursor, "content");
       final int _cursorIndexOfType = CursorUtil.getColumnIndexOrThrow(_cursor, "type");
-      final int _cursorIndexOfCategory = CursorUtil.getColumnIndexOrThrow(_cursor, "category");
+      final int _cursorIndexOfCategoryId = CursorUtil.getColumnIndexOrThrow(_cursor, "categoryId");
+      final int _cursorIndexOfParentCategoryId = CursorUtil.getColumnIndexOrThrow(_cursor, "parentCategoryId");
       final int _cursorIndexOfUsageCount = CursorUtil.getColumnIndexOrThrow(_cursor, "usageCount");
+      final int _cursorIndexOfImagePath = CursorUtil.getColumnIndexOrThrow(_cursor, "imagePath");
+      final int _cursorIndexOfFilePath = CursorUtil.getColumnIndexOrThrow(_cursor, "filePath");
+      final int _cursorIndexOfFileName = CursorUtil.getColumnIndexOrThrow(_cursor, "fileName");
+      final int _cursorIndexOfFileSize = CursorUtil.getColumnIndexOrThrow(_cursor, "fileSize");
       final int _cursorIndexOfCreateTime = CursorUtil.getColumnIndexOrThrow(_cursor, "createTime");
       final int _cursorIndexOfUpdateTime = CursorUtil.getColumnIndexOrThrow(_cursor, "updateTime");
+      final int _cursorIndexOfCategoryName = CursorUtil.getColumnIndexOrThrow(_cursor, "categoryName");
       final Phrase _result;
       if (_cursor.moveToFirst()) {
         _result = new Phrase();
@@ -600,22 +1040,60 @@ public final class PhraseDao_Impl implements PhraseDao {
           _tmpType = _cursor.getString(_cursorIndexOfType);
         }
         _result.setType(_tmpType);
-        final String _tmpCategory;
-        if (_cursor.isNull(_cursorIndexOfCategory)) {
-          _tmpCategory = null;
+        final Long _tmpCategoryId;
+        if (_cursor.isNull(_cursorIndexOfCategoryId)) {
+          _tmpCategoryId = null;
         } else {
-          _tmpCategory = _cursor.getString(_cursorIndexOfCategory);
+          _tmpCategoryId = _cursor.getLong(_cursorIndexOfCategoryId);
         }
-        _result.setCategory(_tmpCategory);
+        _result.setCategoryId(_tmpCategoryId);
+        final Long _tmpParentCategoryId;
+        if (_cursor.isNull(_cursorIndexOfParentCategoryId)) {
+          _tmpParentCategoryId = null;
+        } else {
+          _tmpParentCategoryId = _cursor.getLong(_cursorIndexOfParentCategoryId);
+        }
+        _result.setParentCategoryId(_tmpParentCategoryId);
         final int _tmpUsageCount;
         _tmpUsageCount = _cursor.getInt(_cursorIndexOfUsageCount);
         _result.setUsageCount(_tmpUsageCount);
+        final String _tmpImagePath;
+        if (_cursor.isNull(_cursorIndexOfImagePath)) {
+          _tmpImagePath = null;
+        } else {
+          _tmpImagePath = _cursor.getString(_cursorIndexOfImagePath);
+        }
+        _result.setImagePath(_tmpImagePath);
+        final String _tmpFilePath;
+        if (_cursor.isNull(_cursorIndexOfFilePath)) {
+          _tmpFilePath = null;
+        } else {
+          _tmpFilePath = _cursor.getString(_cursorIndexOfFilePath);
+        }
+        _result.setFilePath(_tmpFilePath);
+        final String _tmpFileName;
+        if (_cursor.isNull(_cursorIndexOfFileName)) {
+          _tmpFileName = null;
+        } else {
+          _tmpFileName = _cursor.getString(_cursorIndexOfFileName);
+        }
+        _result.setFileName(_tmpFileName);
+        final long _tmpFileSize;
+        _tmpFileSize = _cursor.getLong(_cursorIndexOfFileSize);
+        _result.setFileSize(_tmpFileSize);
         final long _tmpCreateTime;
         _tmpCreateTime = _cursor.getLong(_cursorIndexOfCreateTime);
         _result.setCreateTime(_tmpCreateTime);
         final long _tmpUpdateTime;
         _tmpUpdateTime = _cursor.getLong(_cursorIndexOfUpdateTime);
         _result.setUpdateTime(_tmpUpdateTime);
+        final String _tmpCategoryName;
+        if (_cursor.isNull(_cursorIndexOfCategoryName)) {
+          _tmpCategoryName = null;
+        } else {
+          _tmpCategoryName = _cursor.getString(_cursorIndexOfCategoryName);
+        }
+        _result.setCategoryName(_tmpCategoryName);
       } else {
         _result = null;
       }
@@ -667,100 +1145,20 @@ public final class PhraseDao_Impl implements PhraseDao {
   }
 
   @Override
-  public List<String> getAllCategories() {
-    final String _sql = "SELECT DISTINCT category FROM phrases WHERE category IS NOT NULL AND category != ''";
+  public List<Long> getAllCategoryIds() {
+    final String _sql = "SELECT DISTINCT categoryId FROM phrases WHERE categoryId IS NOT NULL";
     final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 0);
     __db.assertNotSuspendingTransaction();
     final Cursor _cursor = DBUtil.query(__db, _statement, false, null);
     try {
-      final List<String> _result = new ArrayList<String>(_cursor.getCount());
+      final List<Long> _result = new ArrayList<Long>(_cursor.getCount());
       while (_cursor.moveToNext()) {
-        final String _item;
+        final Long _item;
         if (_cursor.isNull(0)) {
           _item = null;
         } else {
-          _item = _cursor.getString(0);
+          _item = _cursor.getLong(0);
         }
-        _result.add(_item);
-      }
-      return _result;
-    } finally {
-      _cursor.close();
-      _statement.release();
-    }
-  }
-
-  @Override
-  public List<Phrase> searchPhrasesSync(final String keyword) {
-    final String _sql = "SELECT * FROM phrases WHERE title LIKE '%' || ? || '%' OR content LIKE '%' || ? || '%' ORDER BY updateTime DESC";
-    final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 2);
-    int _argIndex = 1;
-    if (keyword == null) {
-      _statement.bindNull(_argIndex);
-    } else {
-      _statement.bindString(_argIndex, keyword);
-    }
-    _argIndex = 2;
-    if (keyword == null) {
-      _statement.bindNull(_argIndex);
-    } else {
-      _statement.bindString(_argIndex, keyword);
-    }
-    __db.assertNotSuspendingTransaction();
-    final Cursor _cursor = DBUtil.query(__db, _statement, false, null);
-    try {
-      final int _cursorIndexOfId = CursorUtil.getColumnIndexOrThrow(_cursor, "id");
-      final int _cursorIndexOfTitle = CursorUtil.getColumnIndexOrThrow(_cursor, "title");
-      final int _cursorIndexOfContent = CursorUtil.getColumnIndexOrThrow(_cursor, "content");
-      final int _cursorIndexOfType = CursorUtil.getColumnIndexOrThrow(_cursor, "type");
-      final int _cursorIndexOfCategory = CursorUtil.getColumnIndexOrThrow(_cursor, "category");
-      final int _cursorIndexOfUsageCount = CursorUtil.getColumnIndexOrThrow(_cursor, "usageCount");
-      final int _cursorIndexOfCreateTime = CursorUtil.getColumnIndexOrThrow(_cursor, "createTime");
-      final int _cursorIndexOfUpdateTime = CursorUtil.getColumnIndexOrThrow(_cursor, "updateTime");
-      final List<Phrase> _result = new ArrayList<Phrase>(_cursor.getCount());
-      while (_cursor.moveToNext()) {
-        final Phrase _item;
-        _item = new Phrase();
-        final long _tmpId;
-        _tmpId = _cursor.getLong(_cursorIndexOfId);
-        _item.setId(_tmpId);
-        final String _tmpTitle;
-        if (_cursor.isNull(_cursorIndexOfTitle)) {
-          _tmpTitle = null;
-        } else {
-          _tmpTitle = _cursor.getString(_cursorIndexOfTitle);
-        }
-        _item.setTitle(_tmpTitle);
-        final String _tmpContent;
-        if (_cursor.isNull(_cursorIndexOfContent)) {
-          _tmpContent = null;
-        } else {
-          _tmpContent = _cursor.getString(_cursorIndexOfContent);
-        }
-        _item.setContent(_tmpContent);
-        final String _tmpType;
-        if (_cursor.isNull(_cursorIndexOfType)) {
-          _tmpType = null;
-        } else {
-          _tmpType = _cursor.getString(_cursorIndexOfType);
-        }
-        _item.setType(_tmpType);
-        final String _tmpCategory;
-        if (_cursor.isNull(_cursorIndexOfCategory)) {
-          _tmpCategory = null;
-        } else {
-          _tmpCategory = _cursor.getString(_cursorIndexOfCategory);
-        }
-        _item.setCategory(_tmpCategory);
-        final int _tmpUsageCount;
-        _tmpUsageCount = _cursor.getInt(_cursorIndexOfUsageCount);
-        _item.setUsageCount(_tmpUsageCount);
-        final long _tmpCreateTime;
-        _tmpCreateTime = _cursor.getLong(_cursorIndexOfCreateTime);
-        _item.setCreateTime(_tmpCreateTime);
-        final long _tmpUpdateTime;
-        _tmpUpdateTime = _cursor.getLong(_cursorIndexOfUpdateTime);
-        _item.setUpdateTime(_tmpUpdateTime);
         _result.add(_item);
       }
       return _result;

@@ -22,8 +22,9 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.youpin.quickreply.R;
-import com.youpin.quickreply.adapter.PhraseAdapter;
+import com.youpin.quickreply.adapter.CategoryPhraseAdapter;
 import com.youpin.quickreply.database.AppDatabase;
+import com.youpin.quickreply.model.Category;
 import com.youpin.quickreply.model.Phrase;
 import com.youpin.quickreply.service.FloatingWindowService;
 import java.util.ArrayList;
@@ -34,10 +35,9 @@ import java.util.concurrent.Executors;
 public class MainActivity extends AppCompatActivity {
     
     private static final int REQUEST_OVERLAY_PERMISSION = 1001;
-    private static final int REQUEST_STORAGE_PERMISSION = 1002;
     
     private RecyclerView recyclerView;
-    private PhraseAdapter adapter;
+    private CategoryPhraseAdapter adapter;
     private TabLayout tabLayout;
     private EditText etSearch;
     private TextView tvEmpty;
@@ -46,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
     
     private ExecutorService executor;
     private String currentType = "company";
+    private List<Category> categories = new ArrayList<>();
+    private List<Phrase> phrases = new ArrayList<>();
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +61,9 @@ public class MainActivity extends AppCompatActivity {
         initTabs();
         initBottomNavigation();
         checkPermissions();
+        
+        // 延迟加载数据，确保数据库初始化完成
+        recyclerView.postDelayed(() -> loadData(), 500);
     }
     
     private void initViews() {
@@ -82,26 +87,50 @@ public class MainActivity extends AppCompatActivity {
     }
     
     private void initRecyclerView() {
-        adapter = new PhraseAdapter();
+        adapter = new CategoryPhraseAdapter();
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
         
-        adapter.setOnPhraseClickListener(phrase -> {
-            // 复制话术
-            android.content.ClipboardManager clipboard = 
-                (android.content.ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-            android.content.ClipData clip = android.content.ClipData.newPlainText("phrase", phrase.getContent());
-            clipboard.setPrimaryClip(clip);
-            Toast.makeText(this, "已复制到剪贴板", Toast.LENGTH_SHORT).show();
+        adapter.setOnPhraseClickListener(new CategoryPhraseAdapter.OnPhraseClickListener() {
+            @Override
+            public void onPhraseClick(Phrase phrase) {
+                // 复制话术
+                android.content.ClipboardManager clipboard = 
+                    (android.content.ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+                android.content.ClipData clip = android.content.ClipData.newPlainText("phrase", phrase.getContent());
+                clipboard.setPrimaryClip(clip);
+                Toast.makeText(MainActivity.this, "已复制到剪贴板", Toast.LENGTH_SHORT).show();
+                
+                // 增加使用次数
+                executor.execute(() -> {
+                    try {
+                        AppDatabase.getInstance(MainActivity.this).phraseDao().incrementUseCount(phrase.getId());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+            }
             
-            // 增加使用次数
-            executor.execute(() -> {
-                AppDatabase.getInstance(this).phraseDao().incrementUseCount(phrase.getId());
-            });
+            @Override
+            public void onPhraseLongClick(Phrase phrase) {
+                showPhraseOptions(phrase);
+            }
         });
         
-        adapter.setOnPhraseLongClickListener(phrase -> {
-            showPhraseOptions(phrase);
+        adapter.setOnCategoryClickListener(new CategoryPhraseAdapter.OnCategoryClickListener() {
+            @Override
+            public void onCategoryClick(Category category) {
+                // 切换一级分类展开状态
+                category.setExpanded(!category.isExpanded());
+                refreshAdapter();
+            }
+            
+            @Override
+            public void onCategoryExpandClick(Category category) {
+                // 切换二级分类展开状态
+                category.setExpanded(!category.isExpanded());
+                refreshAdapter();
+            }
         });
     }
     
@@ -124,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
                         currentType = "private";
                         break;
                 }
-                loadPhrases();
+                loadData();
             }
             
             @Override
@@ -151,53 +180,66 @@ public class MainActivity extends AppCompatActivity {
         });
     }
     
-    private void loadPhrases() {
+    private void loadData() {
         executor.execute(() -> {
             try {
-                List<Phrase> phrases = AppDatabase.getInstance(this).phraseDao()
-                    .getPhrasesByTypeSync(currentType);
-                if (phrases == null) {
-                    phrases = new ArrayList<>();
+                AppDatabase db = AppDatabase.getInstance(this);
+                
+                // 加载分类
+                categories = db.categoryDao().getAllCategories(currentType);
+                
+                // 计算每个分类的话术数量
+                for (Category cat : categories) {
+                    if (cat.getParentId() == null) {
+                        // 一级分类数量 = 所有子分类数量之和
+                        int count = db.categoryDao().getPhraseCountByParentCategory(cat.getId());
+                        cat.setPhraseCount(count);
+                    } else {
+                        // 二级分类数量
+                        int count = db.categoryDao().getPhraseCountByCategory(cat.getId());
+                        cat.setPhraseCount(count);
+                    }
                 }
-                final List<Phrase> finalPhrases = phrases;
+                
+                // 加载话术
+                phrases = db.phraseDao().getPhrasesByType(currentType);
+                
                 runOnUiThread(() -> {
-                    if (adapter != null) {
-                        adapter.setPhrases(finalPhrases);
-                    }
-                    if (tvEmpty != null) {
-                        tvEmpty.setVisibility(finalPhrases.isEmpty() ? View.VISIBLE : View.GONE);
-                    }
+                    refreshAdapter();
                 });
             } catch (Exception e) {
                 e.printStackTrace();
                 runOnUiThread(() -> {
-                    Toast.makeText(MainActivity.this, "加载数据失败", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "加载数据失败: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 });
             }
         });
     }
     
+    private void refreshAdapter() {
+        adapter.setData(categories, phrases);
+        tvEmpty.setVisibility(categories.isEmpty() && phrases.isEmpty() ? View.VISIBLE : View.GONE);
+    }
+    
     private void searchPhrases(String keyword) {
         if (keyword == null || keyword.isEmpty()) {
-            loadPhrases();
+            loadData();
             return;
         }
         
         executor.execute(() -> {
             try {
-                List<Phrase> phrases = AppDatabase.getInstance(this).phraseDao()
-                    .searchPhrasesSync(keyword);
-                if (phrases == null) {
-                    phrases = new ArrayList<>();
+                List<Phrase> searchResults = AppDatabase.getInstance(this).phraseDao()
+                    .searchPhrasesByType(currentType, keyword);
+                if (searchResults == null) {
+                    searchResults = new ArrayList<>();
                 }
-                final List<Phrase> finalPhrases = phrases;
+                final List<Phrase> finalResults = searchResults;
+                
                 runOnUiThread(() -> {
-                    if (adapter != null) {
-                        adapter.setPhrases(finalPhrases);
-                    }
-                    if (tvEmpty != null) {
-                        tvEmpty.setVisibility(finalPhrases.isEmpty() ? View.VISIBLE : View.GONE);
-                    }
+                    // 搜索时只显示话术，不显示分类结构
+                    adapter.setData(new ArrayList<>(), finalResults);
+                    tvEmpty.setVisibility(finalResults.isEmpty() ? View.VISIBLE : View.GONE);
                 });
             } catch (Exception e) {
                 e.printStackTrace();
@@ -223,14 +265,18 @@ public class MainActivity extends AppCompatActivity {
     private void deletePhrase(Phrase phrase) {
         new AlertDialog.Builder(this)
             .setTitle("确认删除")
-            .setMessage("确定要删除这条话术吗？")
+            .setMessage("确定要删除话术\"" + phrase.getTitle() + "\"吗？")
             .setPositiveButton("删除", (dialog, which) -> {
                 executor.execute(() -> {
-                    AppDatabase.getInstance(this).phraseDao().delete(phrase);
-                    runOnUiThread(() -> {
-                        Toast.makeText(this, "已删除", Toast.LENGTH_SHORT).show();
-                        loadPhrases();
-                    });
+                    try {
+                        AppDatabase.getInstance(this).phraseDao().deleteById(phrase.getId());
+                        runOnUiThread(() -> {
+                            Toast.makeText(this, "已删除", Toast.LENGTH_SHORT).show();
+                            loadData();
+                        });
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 });
             })
             .setNegativeButton("取消", null)
@@ -274,12 +320,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        loadPhrases();
+        loadData();
     }
     
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        executor.shutdown();
+        if (executor != null) {
+            executor.shutdown();
+        }
     }
 }

@@ -15,16 +15,22 @@ import java.util.List;
 public interface PhraseDao {
     
     @Query("SELECT * FROM phrases WHERE type = :type ORDER BY updateTime DESC")
-    LiveData<List<Phrase>> getPhrasesByType(String type);
+    List<Phrase> getPhrasesByType(String type);
     
-    @Query("SELECT * FROM phrases WHERE type = :type ORDER BY updateTime DESC")
-    List<Phrase> getPhrasesByTypeSync(String type);
+    @Query("SELECT * FROM phrases WHERE categoryId = :categoryId ORDER BY updateTime DESC")
+    List<Phrase> getPhrasesByCategory(long categoryId);
+    
+    @Query("SELECT * FROM phrases WHERE parentCategoryId = :parentId ORDER BY updateTime DESC")
+    List<Phrase> getPhrasesByParentCategory(long parentId);
     
     @Query("SELECT * FROM phrases WHERE title LIKE '%' || :keyword || '%' OR content LIKE '%' || :keyword || '%' ORDER BY updateTime DESC")
-    LiveData<List<Phrase>> searchPhrases(String keyword);
+    List<Phrase> searchPhrases(String keyword);
     
     @Query("SELECT * FROM phrases WHERE type = :type AND (title LIKE '%' || :keyword || '%' OR content LIKE '%' || :keyword || '%') ORDER BY updateTime DESC")
-    LiveData<List<Phrase>> searchPhrasesByType(String type, String keyword);
+    List<Phrase> searchPhrasesByType(String type, String keyword);
+    
+    @Query("SELECT * FROM phrases WHERE categoryId = :categoryId AND (title LIKE '%' || :keyword || '%' OR content LIKE '%' || :keyword || '%') ORDER BY updateTime DESC")
+    List<Phrase> searchPhrasesByCategory(long categoryId, String keyword);
     
     @Query("SELECT * FROM phrases WHERE id = :id")
     Phrase getPhraseById(long id);
@@ -50,9 +56,6 @@ public interface PhraseDao {
     @Query("UPDATE phrases SET usageCount = usageCount + 1 WHERE id = :id")
     void incrementUseCount(long id);
     
-    @Query("SELECT DISTINCT category FROM phrases WHERE category IS NOT NULL AND category != ''")
-    List<String> getAllCategories();
-    
-    @Query("SELECT * FROM phrases WHERE title LIKE '%' || :keyword || '%' OR content LIKE '%' || :keyword || '%' ORDER BY updateTime DESC")
-    List<Phrase> searchPhrasesSync(String keyword);
+    @Query("SELECT DISTINCT categoryId FROM phrases WHERE categoryId IS NOT NULL")
+    List<Long> getAllCategoryIds();
 }
