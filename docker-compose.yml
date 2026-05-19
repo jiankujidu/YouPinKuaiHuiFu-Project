@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: youpin-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: youpin123
+      MYSQL_DATABASE: youpin_kuaihuifu
+      MYSQL_USER: youpin
+      MYSQL_PASSWORD: youpin123
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./backend/database.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - youpin-network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: youpin-backend
+    ports:
+      - "3000:3000"
+    environment:
+      DB_HOST: mysql
+      DB_USER: youpin
+      DB_PASSWORD: youpin123
+      DB_NAME: youpin_kuaihuifu
+      JWT_SECRET: your-super-secret-key-change-this
+      PORT: 3000
+    depends_on:
+      - mysql
+    networks:
+      - youpin-network
+
+  pc-web:
+    build:
+      context: ./pc-web
+      dockerfile: Dockerfile
+    container_name: youpin-pc-web
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+    networks:
+      - youpin-network
+
+volumes:
+  mysql_data:
+
+networks:
+  youpin-network:
+    driver: bridge
