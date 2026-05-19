@@ -34,7 +34,7 @@ public class FloatingWindowService extends Service {
     private WindowManager windowManager;
     private View floatingView;
     private View expandedView;
-    private View floatingBall;
+    private ImageView floatingBall;
     private LinearLayout layoutExpanded;
     private RecyclerView recyclerView;
     private SearchView searchView;

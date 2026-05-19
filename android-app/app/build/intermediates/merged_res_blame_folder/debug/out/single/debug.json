@@ -52,6 +52,10 @@
         "source": "com.youpin.quickreply.app-main-39:/mipmap-xhdpi/ic_launcher_round.png"
     },
     {
+        "merged": "com.youpin.quickreply.app-merged_res-37:/drawable_ic_rabbit_logo.png.flat",
+        "source": "com.youpin.quickreply.app-main-39:/drawable/ic_rabbit_logo.png"
+    },
+    {
         "merged": "com.youpin.quickreply.app-merged_res-37:/drawable_ic_search.xml.flat",
         "source": "com.youpin.quickreply.app-main-39:/drawable/ic_search.xml"
     },
@@ -74,6 +78,10 @@
     {
         "merged": "com.youpin.quickreply.app-merged_res-37:/mipmap-hdpi_ic_launcher_round.png.flat",
         "source": "com.youpin.quickreply.app-main-39:/mipmap-hdpi/ic_launcher_round.png"
+    },
+    {
+        "merged": "com.youpin.quickreply.app-merged_res-37:/mipmap-xxxhdpi_ic_launcher.png.flat",
+        "source": "com.youpin.quickreply.app-main-39:/mipmap-xxxhdpi/ic_launcher.png"
     },
     {
         "merged": "com.youpin.quickreply.app-merged_res-37:/layout_item_category_level2.xml.flat",
@@ -134,6 +142,10 @@
     {
         "merged": "com.youpin.quickreply.app-merged_res-37:/mipmap-xxhdpi_ic_launcher.png.flat",
         "source": "com.youpin.quickreply.app-main-39:/mipmap-xxhdpi/ic_launcher.png"
+    },
+    {
+        "merged": "com.youpin.quickreply.app-merged_res-37:/mipmap-xxxhdpi_ic_launcher_round.png.flat",
+        "source": "com.youpin.quickreply.app-main-39:/mipmap-xxxhdpi/ic_launcher_round.png"
     },
     {
         "merged": "com.youpin.quickreply.app-merged_res-37:/drawable_ic_add.xml.flat",
