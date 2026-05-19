@@ -153,28 +153,55 @@ public class MainActivity extends AppCompatActivity {
     
     private void loadPhrases() {
         executor.execute(() -> {
-            List<Phrase> phrases = AppDatabase.getInstance(this).phraseDao()
-                .getPhrasesByTypeSync(currentType);
-            runOnUiThread(() -> {
-                adapter.setPhrases(phrases);
-                tvEmpty.setVisibility(phrases.isEmpty() ? View.VISIBLE : View.GONE);
-            });
+            try {
+                List<Phrase> phrases = AppDatabase.getInstance(this).phraseDao()
+                    .getPhrasesByTypeSync(currentType);
+                if (phrases == null) {
+                    phrases = new ArrayList<>();
+                }
+                final List<Phrase> finalPhrases = phrases;
+                runOnUiThread(() -> {
+                    if (adapter != null) {
+                        adapter.setPhrases(finalPhrases);
+                    }
+                    if (tvEmpty != null) {
+                        tvEmpty.setVisibility(finalPhrases.isEmpty() ? View.VISIBLE : View.GONE);
+                    }
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+                runOnUiThread(() -> {
+                    Toast.makeText(MainActivity.this, "加载数据失败", Toast.LENGTH_SHORT).show();
+                });
+            }
         });
     }
     
     private void searchPhrases(String keyword) {
-        if (keyword.isEmpty()) {
+        if (keyword == null || keyword.isEmpty()) {
             loadPhrases();
             return;
         }
         
         executor.execute(() -> {
-            List<Phrase> phrases = AppDatabase.getInstance(this).phraseDao()
-                .searchPhrasesSync(keyword);
-            runOnUiThread(() -> {
-                adapter.setPhrases(phrases);
-                tvEmpty.setVisibility(phrases.isEmpty() ? View.VISIBLE : View.GONE);
-            });
+            try {
+                List<Phrase> phrases = AppDatabase.getInstance(this).phraseDao()
+                    .searchPhrasesSync(keyword);
+                if (phrases == null) {
+                    phrases = new ArrayList<>();
+                }
+                final List<Phrase> finalPhrases = phrases;
+                runOnUiThread(() -> {
+                    if (adapter != null) {
+                        adapter.setPhrases(finalPhrases);
+                    }
+                    if (tvEmpty != null) {
+                        tvEmpty.setVisibility(finalPhrases.isEmpty() ? View.VISIBLE : View.GONE);
+                    }
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         });
     }
     

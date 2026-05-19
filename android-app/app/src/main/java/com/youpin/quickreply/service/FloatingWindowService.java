@@ -24,6 +24,7 @@ import com.youpin.quickreply.R;
 import com.youpin.quickreply.adapter.FloatingPhraseAdapter;
 import com.youpin.quickreply.database.AppDatabase;
 import com.youpin.quickreply.model.Phrase;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -33,7 +34,7 @@ public class FloatingWindowService extends Service {
     private WindowManager windowManager;
     private View floatingView;
     private View expandedView;
-    private ImageView floatingBall;
+    private View floatingBall;
     private LinearLayout layoutExpanded;
     private RecyclerView recyclerView;
     private SearchView searchView;
@@ -182,29 +183,55 @@ public class FloatingWindowService extends Service {
     
     private void loadPhrases() {
         executor.execute(() -> {
-            List<Phrase> phrases = AppDatabase.getInstance(this).phraseDao()
-                .getPhrasesByTypeSync("private");
-            if (phrases.isEmpty()) {
-                phrases = AppDatabase.getInstance(this).phraseDao()
-                    .getPhrasesByTypeSync("company");
+            try {
+                List<Phrase> phrases = AppDatabase.getInstance(this).phraseDao()
+                    .getPhrasesByTypeSync("private");
+                if (phrases == null || phrases.isEmpty()) {
+                    phrases = AppDatabase.getInstance(this).phraseDao()
+                        .getPhrasesByTypeSync("company");
+                }
+                if (phrases == null) {
+                    phrases = new ArrayList<>();
+                }
+                final List<Phrase> finalPhrases = phrases;
+                if (recyclerView != null) {
+                    recyclerView.post(() -> {
+                        if (adapter != null) {
+                            adapter.setPhrases(finalPhrases);
+                        }
+                    });
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            final List<Phrase> finalPhrases = phrases;
-            recyclerView.post(() -> adapter.setPhrases(finalPhrases));
         });
     }
     
     private void searchPhrases(String keyword) {
         executor.execute(() -> {
-            List<Phrase> phrases;
-            if (keyword.isEmpty()) {
-                phrases = AppDatabase.getInstance(this).phraseDao()
-                    .getPhrasesByTypeSync("private");
-            } else {
-                phrases = AppDatabase.getInstance(this).phraseDao()
-                    .searchPhrasesSync(keyword);
+            try {
+                List<Phrase> phrases;
+                if (keyword == null || keyword.isEmpty()) {
+                    phrases = AppDatabase.getInstance(this).phraseDao()
+                        .getPhrasesByTypeSync("private");
+                } else {
+                    phrases = AppDatabase.getInstance(this).phraseDao()
+                        .searchPhrasesSync(keyword);
+                }
+                if (phrases == null) {
+                    phrases = new ArrayList<>();
+                }
+                final List<Phrase> finalPhrases = phrases;
+                if (recyclerView != null) {
+                    recyclerView.post(() -> {
+                        if (adapter != null) {
+                            adapter.setPhrases(finalPhrases);
+                        }
+                    });
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            final List<Phrase> finalPhrases = phrases;
-            recyclerView.post(() -> adapter.setPhrases(finalPhrases));
         });
     }
     
