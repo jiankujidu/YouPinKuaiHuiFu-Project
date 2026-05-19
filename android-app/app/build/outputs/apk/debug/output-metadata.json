@@ -4,7 +4,7 @@
     "type": "APK",
     "kind": "Directory"
   },
-  "applicationId": "com.quickreply.wechat",
+  "applicationId": "com.youpin.quickreply",
   "variantName": "debug",
   "elements": [
     {

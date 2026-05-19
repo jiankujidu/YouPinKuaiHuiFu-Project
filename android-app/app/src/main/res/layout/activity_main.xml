@@ -1,82 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#EDEDED">
+    android:orientation="vertical"
+    android:background="#F5F5F5">
 
-    <!-- 微信风格标题栏 -->
-    <com.google.android.material.appbar.AppBarLayout
+    <!-- Header -->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#EDEDED"
-        app:elevation="0dp">
+        android:orientation="vertical"
+        android:background="#07C160"
+        android:padding="12dp">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:background="#EDEDED"
-            app:titleTextColor="#000000"
-            app:titleTextAppearance="@style/WeChatTitle">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="优品快回复"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="8dp"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="快捷回复"
-                android:textColor="#000000"
-                android:textSize="17sp"
-                android:textStyle="bold"/>
-
-        </androidx.appcompat.widget.Toolbar>
-
-        <!-- Tab 标签 -->
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tab_layout"
+        <EditText
+            android:id="@+id/et_search"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:background="#FFFFFF"
-            app:tabIndicatorColor="#07C160"
-            app:tabIndicatorHeight="2dp"
-            app:tabSelectedTextColor="#07C160"
-            app:tabTextColor="#666666"
-            app:tabTextAppearance="@style/WeChatTab"/>
+            android:background="@drawable/bg_search"
+            android:hint="搜索话术"
+            android:textSize="14sp"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:imeOptions="actionSearch"
+            android:inputType="text"/>
+    </LinearLayout>
 
-    </com.google.android.material.appbar.AppBarLayout>
-
-    <!-- 话术列表 -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view"
+    <!-- Tabs -->
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tab_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="88dp"
-        android:padding="8dp"
-        android:clipToPadding="false"/>
+        android:layout_height="48dp"
+        android:background="#FFFFFF"
+        app:tabIndicatorColor="#07C160"
+        app:tabSelectedTextColor="#07C160"
+        app:tabTextColor="#666666"/>
 
-    <!-- 空视图 -->
-    <TextView
-        android:id="@+id/empty_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="暂无话术\n点击右下角添加"
-        android:textColor="#999999"
-        android:textSize="14sp"
-        android:gravity="center"
-        android:visibility="gone"/>
+    <!-- Content -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
-    <!-- 添加按钮 -->
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_add"
-        android:layout_width="56dp"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="8dp"
+            android:clipToPadding="false"/>
+
+        <TextView
+            android:id="@+id/tv_empty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="暂无话术，点击右下角添加"
+            android:textColor="#999999"
+            android:textSize="14sp"
+            android:layout_gravity="center"
+            android:visibility="gone"/>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="16dp"
+            android:src="@android:drawable/ic_input_add"
+            app:backgroundTint="#07C160"
+            app:tint="#FFFFFF"/>
+    </FrameLayout>
+
+    <!-- Bottom Navigation -->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="16dp"
-        android:src="@drawable/ic_add"
-        android:backgroundTint="#07C160"
-        app:tint="#FFFFFF"
-        app:elevation="4dp"/>
+        android:background="#FFFFFF"
+        app:menu="@menu/bottom_nav_menu"/>
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</LinearLayout>

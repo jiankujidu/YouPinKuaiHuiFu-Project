@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.quickreply.wechat.app-mergeDebugResources-35:/values-fa/values-fa.xml",
+            "outputFile": "com.youpin.quickreply.app-mergeDebugResources-35:/values-fa/values-fa.xml",
             "map": [
                 {
                     "source": "/root/.gradle/caches/transforms-3/722aeb917e7cb0ca4fa93649c1bd9b26/transformed/appcompat-1.6.1/res/values-fa/values-fa.xml",

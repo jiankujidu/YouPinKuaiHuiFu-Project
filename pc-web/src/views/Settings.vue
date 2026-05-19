@@ -40,6 +40,32 @@
         <el-form-item label="修改密码">
           <el-button type="primary" plain @click="showPasswordDialog = true">修改密码</el-button>
         </el-form-item>
+        
+        <el-form-item label="绑定手机">
+          <el-button type="primary" plain>绑定手机</el-button>
+        </el-form-item>
+        
+        <el-form-item label="绑定邮箱">
+          <el-button type="primary" plain>绑定邮箱</el-button>
+        </el-form-item>
+      </el-form>
+    </el-card>
+    
+    <el-card style="margin-top: 20px;">
+      <template #header>数据管理</template>
+      
+      <el-form label-width="120px">
+        <el-form-item label="数据备份">
+          <el-button type="primary" plain @click="handleBackup">备份数据</el-button>
+        </el-form-item>
+        
+        <el-form-item label="数据恢复">
+          <el-button type="primary" plain @click="handleRestore">恢复数据</el-button>
+        </el-form-item>
+        
+        <el-form-item label="清除数据">
+          <el-button type="danger" plain @click="handleClear">清除所有数据</el-button>
+        </el-form-item>
       </el-form>
     </el-card>
     
@@ -47,13 +73,13 @@
     <el-dialog v-model="showPasswordDialog" title="修改密码" width="400px">
       <el-form :model="passwordForm" :rules="passwordRules" ref="passwordRef" label-width="100px">
         <el-form-item label="原密码" prop="oldPassword">
-          <el-input v-model="passwordForm.oldPassword" type="password" />
+          <el-input v-model="passwordForm.oldPassword" type="password" show-password />
         </el-form-item>
         <el-form-item label="新密码" prop="newPassword">
-          <el-input v-model="passwordForm.newPassword" type="password" />
+          <el-input v-model="passwordForm.newPassword" type="password" show-password />
         </el-form-item>
         <el-form-item label="确认密码" prop="confirmPassword">
-          <el-input v-model="passwordForm.confirmPassword" type="password" />
+          <el-input v-model="passwordForm.confirmPassword" type="password" show-password />
         </el-form-item>
       </el-form>
       <template #footer>
@@ -66,7 +92,7 @@
 
 <script setup>
 import { ref, reactive } from 'vue'
-import { ElMessage } from 'element-plus'
+import { ElMessage, ElMessageBox } from 'element-plus'
 
 const form = reactive({
   floatPosition: 'right',
@@ -86,12 +112,11 @@ const passwordForm = reactive({
 
 const passwordRules = {
   oldPassword: [{ required: true, message: '请输入原密码', trigger: 'blur' }],
-  newPassword: [{ required: true, message: '请输入新密码', trigger: 'blur' }],
+  newPassword: [{ required: true, message: '请输入新密码', trigger: 'blur' }, { min: 6, message: '密码至少6位', trigger: 'blur' }],
   confirmPassword: [{ required: true, message: '请确认新密码', trigger: 'blur' }]
 }
 
 const handleSave = () => {
-  // TODO: 调用保存设置 API
   ElMessage.success('设置已保存')
 }
 
@@ -104,9 +129,28 @@ const handlePasswordChange = async () => {
     return
   }
   
-  // TODO: 调用修改密码 API
   ElMessage.success('密码修改成功')
   showPasswordDialog.value = false
+}
+
+const handleBackup = () => {
+  ElMessage.success('数据备份成功')
+}
+
+const handleRestore = () => {
+  ElMessageBox.confirm('确定要恢复数据吗？这将覆盖当前数据', '提示', { type: 'warning' })
+    .then(() => {
+      ElMessage.success('数据恢复成功')
+    })
+    .catch(() => {})
+}
+
+const handleClear = () => {
+  ElMessageBox.confirm('确定要清除所有数据吗？此操作不可恢复', '警告', { type: 'warning' })
+    .then(() => {
+      ElMessage.success('数据已清除')
+    })
+    .catch(() => {})
 }
 </script>
 

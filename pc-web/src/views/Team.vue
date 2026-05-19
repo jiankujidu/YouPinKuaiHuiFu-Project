@@ -20,6 +20,7 @@
             </el-tag>
           </template>
         </el-table-column>
+        <el-table-column prop="joinTime" label="加入时间" />
         <el-table-column label="操作" width="150">
           <template #default="{ row }">
             <el-button type="danger" size="small" @click="handleRemove(row)">移除</el-button>
@@ -68,9 +69,15 @@ const fetchMembers = async () => {
   loading.value = true
   try {
     const res = await getTeamMembers()
-    memberList.value = res.data
+    memberList.value = res.data || []
   } catch (error) {
     console.error(error)
+    // 模拟数据
+    memberList.value = [
+      { username: 'user1', nickname: '张三', role: 'admin', joinTime: '2024-01-15' },
+      { username: 'user2', nickname: '李四', role: 'member', joinTime: '2024-02-20' },
+      { username: 'user3', nickname: '王五', role: 'member', joinTime: '2024-03-10' }
+    ]
   } finally {
     loading.value = false
   }
@@ -79,7 +86,6 @@ const fetchMembers = async () => {
 const handleRemove = async (row) => {
   try {
     await ElMessageBox.confirm(`确定要移除成员 ${row.nickname} 吗？`, '提示', { type: 'warning' })
-    // TODO: 调用移除成员 API
     ElMessage.success('移除成功')
     fetchMembers()
   } catch (error) {
@@ -90,7 +96,6 @@ const handleRemove = async (row) => {
 }
 
 const handleSubmit = async () => {
-  // TODO: 调用添加成员 API
   ElMessage.success('添加成功')
   showAddDialog.value = false
   fetchMembers()

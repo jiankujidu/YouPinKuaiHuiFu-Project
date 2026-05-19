@@ -5,13 +5,12 @@
     android:layout_height="56dp">
 
     <ImageView
-        android:id="@+id/floating_icon"
+        android:id="@+id/floating_ball"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_gravity="center"
-        android:src="@drawable/ic_float"
+        android:src="@android:drawable/ic_dialog_email"
         android:background="@drawable/bg_floating_ball"
-        android:elevation="4dp"
-        android:padding="10dp"/>
+        android:padding="8dp"/>
 
 </FrameLayout>

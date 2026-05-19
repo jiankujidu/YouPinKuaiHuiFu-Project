@@ -1,31 +1,19 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">优品快回复</string>
-    
-    <!-- 分类 -->
-    <string name="category_company">公司话术</string>
-    <string name="category_team">小组话术</string>
-    <string name="category_private">私人话术</string>
-    
-    <!-- 按钮 -->
-    <string name="btn_save">保存</string>
-    <string name="btn_cancel">取消</string>
-    <string name="btn_delete">删除</string>
-    <string name="btn_copy">复制</string>
-    <string name="btn_add">添加</string>
-    
-    <!-- 提示 -->
-    <string name="hint_search">搜索话术...</string>
-    <string name="hint_content">请输入话术内容...</string>
-    <string name="hint_category">请输入分类名称...</string>
-    
-    <!-- 空状态 -->
-    <string name="empty_phrases">暂无话术\n点击右下角添加</string>
-    <string name="empty_categories">暂无分类\n请添加分类</string>
-    
-    <!-- 设置 -->
-    <string name="settings_floating">悬浮窗</string>
-    <string name="settings_permission">权限设置</string>
-    <string name="settings_category">分类管理</string>
-    <string name="settings_about">关于</string>
+    <string name="title_phrases">话术库</string>
+    <string name="title_team">团队话术</string>
+    <string name="title_profile">个人中心</string>
+    <string name="search_hint">搜索话术</string>
+    <string name="add_phrase">添加话术</string>
+    <string name="edit_phrase">编辑话术</string>
+    <string name="save">保存</string>
+    <string name="cancel">取消</string>
+    <string name="delete">删除</string>
+    <string name="confirm_delete">确认删除</string>
+    <string name="delete_message">确定要删除这条话术吗？</string>
+    <string name="copied">已复制到剪贴板</string>
+    <string name="settings">设置</string>
+    <string name="about">关于我们</string>
+    <string name="float_window">悬浮窗</string>
+    <string name="clear_cache">清除缓存</string>
 </resources>

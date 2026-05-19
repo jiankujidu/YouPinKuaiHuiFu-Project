@@ -1,130 +1,134 @@
 [
     {
-        "merged": "com.quickreply.wechat.app-merged_res-37:/mipmap-mdpi_ic_launcher.png.flat",
-        "source": "com.quickreply.wechat.app-main-39:/mipmap-mdpi/ic_launcher.png"
+        "merged": "com.youpin.quickreply.app-merged_res-37:/mipmap-xhdpi_ic_launcher.png.flat",
+        "source": "com.youpin.quickreply.app-main-39:/mipmap-xhdpi/ic_launcher.png"
     },
     {
-        "merged": "com.quickreply.wechat.app-merged_res-37:/mipmap-xhdpi_ic_launcher_round.png.flat",
-        "source": "com.quickreply.wechat.app-main-39:/mipmap-xhdpi/ic_launcher_round.png"
+        "merged": "com.youpin.quickreply.app-merged_res-37:/layout_item_phrase.xml.flat",
+        "source": "com.youpin.quickreply.app-main-39:/layout/item_phrase.xml"
     },
     {
-        "merged": "/root/.gradle/daemon/8.2/com.quickreply.wechat.app-merged_res-37:/drawable_bg_category_tag.xml.flat",
-        "source": "/root/.gradle/daemon/8.2/com.quickreply.wechat.app-main-39:/drawable/bg_category_tag.xml"
+        "merged": "com.youpin.quickreply.app-merged_res-37:/drawable_ic_close.xml.flat",
+        "source": "com.youpin.quickreply.app-main-39:/drawable/ic_close.xml"
     },
     {
-        "merged": "/root/.gradle/daemon/8.2/com.quickreply.wechat.app-merged_res-37:/layout_item_phrase.xml.flat",
-        "source": "/root/.gradle/daemon/8.2/com.quickreply.wechat.app-main-39:/layout/item_phrase.xml"
+        "merged": "com.youpin.quickreply.app-merged_res-37:/menu_bottom_nav_menu.xml.flat",
+        "source": "com.youpin.quickreply.app-main-39:/menu/bottom_nav_menu.xml"
     },
     {
-        "merged": "/root/.gradle/daemon/8.2/com.quickreply.wechat.app-merged_res-37:/layout_activity_settings.xml.flat",
-        "source": "/root/.gradle/daemon/8.2/com.quickreply.wechat.app-main-39:/layout/activity_settings.xml"
+        "merged": "com.youpin.quickreply.app-merged_res-37:/layout_item_floating_phrase.xml.flat",
+        "source": "com.youpin.quickreply.app-main-39:/layout/item_floating_phrase.xml"
     },
     {
-        "merged": "/root/.gradle/daemon/8.2/com.quickreply.wechat.app-merged_res-37:/anim_slide_in_bottom.xml.flat",
-        "source": "/root/.gradle/daemon/8.2/com.quickreply.wechat.app-main-39:/anim/slide_in_bottom.xml"
+        "merged": "com.youpin.quickreply.app-merged_res-37:/drawable_bg_category_tag.xml.flat",
+        "source": "com.youpin.quickreply.app-main-39:/drawable/bg_category_tag.xml"
     },
     {
-        "merged": "/root/.gradle/daemon/8.2/com.quickreply.wechat.app-merged_res-37:/drawable_ic_search.xml.flat",
-        "source": "/root/.gradle/daemon/8.2/com.quickreply.wechat.app-main-39:/drawable/ic_search.xml"
+        "merged": "com.youpin.quickreply.app-merged_res-37:/anim_slide_out_bottom.xml.flat",
+        "source": "com.youpin.quickreply.app-main-39:/anim/slide_out_bottom.xml"
     },
     {
-        "merged": "/root/.gradle/daemon/8.2/com.quickreply.wechat.app-merged_res-37:/layout_activity_phrase_edit.xml.flat",
-        "source": "/root/.gradle/daemon/8.2/com.quickreply.wechat.app-main-39:/layout/activity_phrase_edit.xml"
+        "merged": "com.youpin.quickreply.app-merged_res-37:/layout_layout_floating_window.xml.flat",
+        "source": "com.youpin.quickreply.app-main-39:/layout/layout_floating_window.xml"
     },
     {
-        "merged": "com.quickreply.wechat.app-merged_res-37:/mipmap-mdpi_ic_launcher_round.png.flat",
-        "source": "com.quickreply.wechat.app-main-39:/mipmap-mdpi/ic_launcher_round.png"
+        "merged": "com.youpin.quickreply.app-merged_res-37:/layout_activity_profile.xml.flat",
+        "source": "com.youpin.quickreply.app-main-39:/layout/activity_profile.xml"
     },
     {
-        "merged": "/root/.gradle/daemon/8.2/com.quickreply.wechat.app-merged_res-37:/drawable_ic_add.xml.flat",
-        "source": "/root/.gradle/daemon/8.2/com.quickreply.wechat.app-main-39:/drawable/ic_add.xml"
+        "merged": "com.youpin.quickreply.app-merged_res-37:/mipmap-hdpi_ic_launcher.png.flat",
+        "source": "com.youpin.quickreply.app-main-39:/mipmap-hdpi/ic_launcher.png"
     },
     {
-        "merged": "/root/.gradle/daemon/8.2/com.quickreply.wechat.app-merged_res-37:/drawable_ic_close.xml.flat",
-        "source": "/root/.gradle/daemon/8.2/com.quickreply.wechat.app-main-39:/drawable/ic_close.xml"
+        "merged": "com.youpin.quickreply.app-merged_res-37:/drawable_bg_spinner.xml.flat",
+        "source": "com.youpin.quickreply.app-main-39:/drawable/bg_spinner.xml"
     },
     {
-        "merged": "/root/.gradle/daemon/8.2/com.quickreply.wechat.app-merged_res-37:/drawable_bg_floating_ball.xml.flat",
-        "source": "/root/.gradle/daemon/8.2/com.quickreply.wechat.app-main-39:/drawable/bg_floating_ball.xml"
+        "merged": "com.youpin.quickreply.app-merged_res-37:/drawable_ic_settings.xml.flat",
+        "source": "com.youpin.quickreply.app-main-39:/drawable/ic_settings.xml"
     },
     {
-        "merged": "com.quickreply.wechat.app-merged_res-37:/mipmap-xxhdpi_ic_launcher_round.png.flat",
-        "source": "com.quickreply.wechat.app-main-39:/mipmap-xxhdpi/ic_launcher_round.png"
+        "merged": "com.youpin.quickreply.app-merged_res-37:/mipmap-xhdpi_ic_launcher_round.png.flat",
+        "source": "com.youpin.quickreply.app-main-39:/mipmap-xhdpi/ic_launcher_round.png"
     },
     {
-        "merged": "/root/.gradle/daemon/8.2/com.quickreply.wechat.app-merged_res-37:/drawable_bg_button_primary.xml.flat",
-        "source": "/root/.gradle/daemon/8.2/com.quickreply.wechat.app-main-39:/drawable/bg_button_primary.xml"
+        "merged": "com.youpin.quickreply.app-merged_res-37:/drawable_ic_search.xml.flat",
+        "source": "com.youpin.quickreply.app-main-39:/drawable/ic_search.xml"
     },
     {
-        "merged": "/root/.gradle/daemon/8.2/com.quickreply.wechat.app-merged_res-37:/layout_item_floating_phrase.xml.flat",
-        "source": "/root/.gradle/daemon/8.2/com.quickreply.wechat.app-main-39:/layout/item_floating_phrase.xml"
+        "merged": "com.youpin.quickreply.app-merged_res-37:/mipmap-mdpi_ic_launcher_round.png.flat",
+        "source": "com.youpin.quickreply.app-main-39:/mipmap-mdpi/ic_launcher_round.png"
     },
     {
-        "merged": "/root/.gradle/daemon/8.2/com.quickreply.wechat.app-merged_res-37:/layout_item_category.xml.flat",
-        "source": "/root/.gradle/daemon/8.2/com.quickreply.wechat.app-main-39:/layout/item_category.xml"
+        "merged": "com.youpin.quickreply.app-merged_res-37:/layout_activity_main.xml.flat",
+        "source": "com.youpin.quickreply.app-main-39:/layout/activity_main.xml"
     },
     {
-        "merged": "/root/.gradle/daemon/8.2/com.quickreply.wechat.app-merged_res-37:/layout_activity_main.xml.flat",
-        "source": "/root/.gradle/daemon/8.2/com.quickreply.wechat.app-main-39:/layout/activity_main.xml"
+        "merged": "com.youpin.quickreply.app-merged_res-37:/layout_activity_settings.xml.flat",
+        "source": "com.youpin.quickreply.app-main-39:/layout/activity_settings.xml"
     },
     {
-        "merged": "/root/.gradle/daemon/8.2/com.quickreply.wechat.app-merged_res-37:/drawable_bg_search.xml.flat",
-        "source": "/root/.gradle/daemon/8.2/com.quickreply.wechat.app-main-39:/drawable/bg_search.xml"
+        "merged": "com.youpin.quickreply.app-merged_res-37:/mipmap-hdpi_ic_launcher_round.png.flat",
+        "source": "com.youpin.quickreply.app-main-39:/mipmap-hdpi/ic_launcher_round.png"
     },
     {
-        "merged": "com.quickreply.wechat.app-merged_res-37:/mipmap-hdpi_ic_launcher.png.flat",
-        "source": "com.quickreply.wechat.app-main-39:/mipmap-hdpi/ic_launcher.png"
+        "merged": "com.youpin.quickreply.app-merged_res-37:/drawable_ic_copy.xml.flat",
+        "source": "com.youpin.quickreply.app-main-39:/drawable/ic_copy.xml"
     },
     {
-        "merged": "com.quickreply.wechat.app-merged_res-37:/mipmap-xxhdpi_ic_launcher.png.flat",
-        "source": "com.quickreply.wechat.app-main-39:/mipmap-xxhdpi/ic_launcher.png"
+        "merged": "com.youpin.quickreply.app-merged_res-37:/drawable_bg_floating_ball.xml.flat",
+        "source": "com.youpin.quickreply.app-main-39:/drawable/bg_floating_ball.xml"
     },
     {
-        "merged": "com.quickreply.wechat.app-merged_res-37:/mipmap-xhdpi_ic_launcher.png.flat",
-        "source": "com.quickreply.wechat.app-main-39:/mipmap-xhdpi/ic_launcher.png"
+        "merged": "com.youpin.quickreply.app-merged_res-37:/drawable_bg_input.xml.flat",
+        "source": "com.youpin.quickreply.app-main-39:/drawable/bg_input.xml"
     },
     {
-        "merged": "/root/.gradle/daemon/8.2/com.quickreply.wechat.app-merged_res-37:/drawable_bg_spinner.xml.flat",
-        "source": "/root/.gradle/daemon/8.2/com.quickreply.wechat.app-main-39:/drawable/bg_spinner.xml"
+        "merged": "com.youpin.quickreply.app-merged_res-37:/drawable_bg_search.xml.flat",
+        "source": "com.youpin.quickreply.app-main-39:/drawable/bg_search.xml"
     },
     {
-        "merged": "/root/.gradle/daemon/8.2/com.quickreply.wechat.app-merged_res-37:/anim_slide_out_bottom.xml.flat",
-        "source": "/root/.gradle/daemon/8.2/com.quickreply.wechat.app-main-39:/anim/slide_out_bottom.xml"
+        "merged": "com.youpin.quickreply.app-merged_res-37:/layout_layout_floating_ball.xml.flat",
+        "source": "com.youpin.quickreply.app-main-39:/layout/layout_floating_ball.xml"
     },
     {
-        "merged": "com.quickreply.wechat.app-merged_res-37:/mipmap-hdpi_ic_launcher_round.png.flat",
-        "source": "com.quickreply.wechat.app-main-39:/mipmap-hdpi/ic_launcher_round.png"
+        "merged": "com.youpin.quickreply.app-merged_res-37:/layout_activity_phrase_edit.xml.flat",
+        "source": "com.youpin.quickreply.app-main-39:/layout/activity_phrase_edit.xml"
     },
     {
-        "merged": "/root/.gradle/daemon/8.2/com.quickreply.wechat.app-merged_res-37:/drawable_ic_float.xml.flat",
-        "source": "/root/.gradle/daemon/8.2/com.quickreply.wechat.app-main-39:/drawable/ic_float.xml"
+        "merged": "com.youpin.quickreply.app-merged_res-37:/drawable_ic_notification.xml.flat",
+        "source": "com.youpin.quickreply.app-main-39:/drawable/ic_notification.xml"
     },
     {
-        "merged": "/root/.gradle/daemon/8.2/com.quickreply.wechat.app-merged_res-37:/drawable_ic_settings.xml.flat",
-        "source": "/root/.gradle/daemon/8.2/com.quickreply.wechat.app-main-39:/drawable/ic_settings.xml"
+        "merged": "com.youpin.quickreply.app-merged_res-37:/drawable_bg_button_primary.xml.flat",
+        "source": "com.youpin.quickreply.app-main-39:/drawable/bg_button_primary.xml"
     },
     {
-        "merged": "/root/.gradle/daemon/8.2/com.quickreply.wechat.app-merged_res-37:/drawable_bg_input.xml.flat",
-        "source": "/root/.gradle/daemon/8.2/com.quickreply.wechat.app-main-39:/drawable/bg_input.xml"
+        "merged": "com.youpin.quickreply.app-merged_res-37:/mipmap-mdpi_ic_launcher.png.flat",
+        "source": "com.youpin.quickreply.app-main-39:/mipmap-mdpi/ic_launcher.png"
     },
     {
-        "merged": "/root/.gradle/daemon/8.2/com.quickreply.wechat.app-merged_res-37:/drawable_ic_notification.xml.flat",
-        "source": "/root/.gradle/daemon/8.2/com.quickreply.wechat.app-main-39:/drawable/ic_notification.xml"
+        "merged": "com.youpin.quickreply.app-merged_res-37:/anim_slide_in_bottom.xml.flat",
+        "source": "com.youpin.quickreply.app-main-39:/anim/slide_in_bottom.xml"
     },
     {
-        "merged": "/root/.gradle/daemon/8.2/com.quickreply.wechat.app-merged_res-37:/drawable_ic_copy.xml.flat",
-        "source": "/root/.gradle/daemon/8.2/com.quickreply.wechat.app-main-39:/drawable/ic_copy.xml"
+        "merged": "com.youpin.quickreply.app-merged_res-37:/drawable_bg_circle_white.xml.flat",
+        "source": "com.youpin.quickreply.app-main-39:/drawable/bg_circle_white.xml"
     },
     {
-        "merged": "/root/.gradle/daemon/8.2/com.quickreply.wechat.app-merged_res-37:/layout_layout_floating_ball.xml.flat",
-        "source": "/root/.gradle/daemon/8.2/com.quickreply.wechat.app-main-39:/layout/layout_floating_ball.xml"
+        "merged": "com.youpin.quickreply.app-merged_res-37:/drawable_ic_float.xml.flat",
+        "source": "com.youpin.quickreply.app-main-39:/drawable/ic_float.xml"
     },
     {
-        "merged": "/root/.gradle/daemon/8.2/com.quickreply.wechat.app-merged_res-37:/layout_activity_category_manage.xml.flat",
-        "source": "/root/.gradle/daemon/8.2/com.quickreply.wechat.app-main-39:/layout/activity_category_manage.xml"
+        "merged": "com.youpin.quickreply.app-merged_res-37:/mipmap-xxhdpi_ic_launcher.png.flat",
+        "source": "com.youpin.quickreply.app-main-39:/mipmap-xxhdpi/ic_launcher.png"
     },
     {
-        "merged": "/root/.gradle/daemon/8.2/com.quickreply.wechat.app-merged_res-37:/layout_layout_floating_window.xml.flat",
-        "source": "/root/.gradle/daemon/8.2/com.quickreply.wechat.app-main-39:/layout/layout_floating_window.xml"
+        "merged": "com.youpin.quickreply.app-merged_res-37:/drawable_ic_add.xml.flat",
+        "source": "com.youpin.quickreply.app-main-39:/drawable/ic_add.xml"
+    },
+    {
+        "merged": "com.youpin.quickreply.app-merged_res-37:/mipmap-xxhdpi_ic_launcher_round.png.flat",
+        "source": "com.youpin.quickreply.app-main-39:/mipmap-xxhdpi/ic_launcher_round.png"
     }
 ]

@@ -4,82 +4,135 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#EDEDED">
+    android:background="#F5F5F5">
 
-    <!-- 标题栏 -->
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:background="#EDEDED">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="新建话术"
-            android:textColor="#000000"
-            android:textSize="17sp"
-            android:textStyle="bold"/>
-
-    </androidx.appcompat.widget.Toolbar>
-
-    <!-- 内容区域 -->
+    <!-- Title Bar -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:orientation="vertical"
-        android:background="#FFFFFF"
-        android:padding="16dp">
+        android:layout_height="56dp"
+        android:background="#07C160"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
 
-        <!-- 话术内容输入 -->
+        <ImageButton
+            android:id="@+id/btn_back"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@android:drawable/ic_menu_close_clear_cancel"
+            android:tint="#FFFFFF"/>
+
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="话术内容"
-            android:textColor="#666666"
-            android:textSize="14sp"
-            android:layout_marginBottom="8dp"/>
+            android:layout_weight="1"
+            android:text="编辑话术"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:gravity="center"/>
 
-        <EditText
-            android:id="@+id/et_content"
-            android:layout_width="match_parent"
-            android:layout_height="120dp"
-            android:background="@drawable/bg_input"
-            android:gravity="top"
-            android:hint="请输入话术内容..."
-            android:padding="12dp"
-            android:textColor="#333333"
-            android:textSize="15sp"/>
-
-        <!-- 分类选择 -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="选择分类"
-            android:textColor="#666666"
-            android:textSize="14sp"
-            android:layout_marginBottom="8dp"/>
-
-        <Spinner
-            android:id="@+id/spinner_category"
-            android:layout_width="match_parent"
-            android:layout_height="44dp"
-            android:background="@drawable/bg_spinner"/>
-
+        <View
+            android:layout_width="48dp"
+            android:layout_height="48dp"/>
     </LinearLayout>
 
-    <!-- 保存按钮 -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="话术类型"
+                android:textSize="14sp"
+                android:textColor="#666666"
+                android:layout_marginBottom="8dp"/>
+
+            <RadioGroup
+                android:id="@+id/rg_type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="16dp">
+
+                <RadioButton
+                    android:id="@+id/rb_company"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="公司话术"
+                    android:checked="true"/>
+
+                <RadioButton
+                    android:id="@+id/rb_team"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="小组话术"
+                    android:layout_marginStart="16dp"/>
+
+                <RadioButton
+                    android:id="@+id/rb_private"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="私人话术"
+                    android:layout_marginStart="16dp"/>
+            </RadioGroup>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="话术标题"
+                android:textSize="14sp"
+                android:textColor="#666666"
+                android:layout_marginBottom="8dp"/>
+
+            <EditText
+                android:id="@+id/et_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_input"
+                android:hint="请输入话术标题"
+                android:textSize="14sp"
+                android:padding="12dp"
+                android:layout_marginBottom="16dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="话术内容"
+                android:textSize="14sp"
+                android:textColor="#666666"
+                android:layout_marginBottom="8dp"/>
+
+            <EditText
+                android:id="@+id/et_content"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:background="@drawable/bg_input"
+                android:hint="请输入话术内容"
+                android:textSize="14sp"
+                android:padding="12dp"
+                android:gravity="top"
+                android:layout_marginBottom="24dp"/>
+
+        </LinearLayout>
+    </ScrollView>
+
     <Button
         android:id="@+id/btn_save"
         android:layout_width="match_parent"
-        android:layout_height="44dp"
+        android:layout_height="48dp"
         android:layout_margin="16dp"
+        android:background="@drawable/bg_button_primary"
         android:text="保存"
         android:textColor="#FFFFFF"
-        android:textSize="16sp"
-        android:background="@drawable/bg_button_primary"/>
+        android:textSize="16sp"/>
 
 </LinearLayout>

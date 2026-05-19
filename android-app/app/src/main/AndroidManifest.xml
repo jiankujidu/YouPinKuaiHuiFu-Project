@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.quickreply.wechat">
+    package="com.youpin.quickreply">
 
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
         android:name=".QuickReplyApp"
@@ -14,8 +13,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.WeChatQuickReply"
-        android:windowSoftInputMode="adjustPan">
+        android:theme="@style/AppTheme">
 
         <activity
             android:name=".ui.MainActivity"
@@ -29,15 +27,15 @@
 
         <activity
             android:name=".ui.PhraseEditActivity"
-            android:theme="@style/Theme.WeChatQuickReply.NoActionBar" />
+            android:parentActivityName=".ui.MainActivity" />
 
         <activity
-            android:name=".ui.CategoryManageActivity"
-            android:theme="@style/Theme.WeChatQuickReply.NoActionBar" />
+            android:name=".ui.ProfileActivity"
+            android:parentActivityName=".ui.MainActivity" />
 
         <activity
             android:name=".ui.SettingsActivity"
-            android:theme="@style/Theme.WeChatQuickReply.NoActionBar" />
+            android:parentActivityName=".ui.ProfileActivity" />
 
         <service
             android:name=".service.FloatingWindowService"
