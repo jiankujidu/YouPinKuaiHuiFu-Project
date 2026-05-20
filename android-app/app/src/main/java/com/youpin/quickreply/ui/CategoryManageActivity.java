@@ -1,7 +1,6 @@
 package com.youpin.quickreply.ui;
 
 import android.app.AlertDialog;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -30,7 +29,7 @@ public class CategoryManageActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private CategoryAdapter adapter;
     private TextView tvEmpty;
-    private Button btnAddLevel1;
+    private Button btnAddRoot;
     
     private ExecutorService executor;
     private String type = "company";
@@ -53,7 +52,7 @@ public class CategoryManageActivity extends AppCompatActivity {
     private void initViews() {
         recyclerView = findViewById(R.id.recycler_view);
         tvEmpty = findViewById(R.id.tv_empty);
-        btnAddLevel1 = findViewById(R.id.btn_add_level1);
+        btnAddRoot = findViewById(R.id.btn_add_level1);
         
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new CategoryAdapter();
@@ -63,20 +62,12 @@ public class CategoryManageActivity extends AppCompatActivity {
     private void setupListeners() {
         findViewById(R.id.btn_back).setOnClickListener(v -> finish());
         
-        btnAddLevel1.setOnClickListener(v -> {
-            showAddCategoryDialog(null);
+        btnAddRoot.setOnClickListener(v -> {
+            showAddCategoryDialog(null, 0);
         });
         
-        adapter.setOnCategoryClickListener(category -> {
-            if (category.getLevel() == 1) {
-                // 一级分类，显示添加二级分类选项
-                showCategoryOptions(category);
-            }
-        });
-        
-        adapter.setOnCategoryLongClickListener(category -> {
-            showEditDeleteOptions(category);
-            return true;
+        adapter.setOnCategoryClickListener((category, position) -> {
+            showCategoryOptions(category);
         });
     }
     
@@ -84,6 +75,7 @@ public class CategoryManageActivity extends AppCompatActivity {
         executor.execute(() -> {
             try {
                 categories = AppDatabase.getInstance(this).categoryDao().getCategoriesByType(type);
+                buildHierarchy();
                 
                 runOnUiThread(() -> {
                     adapter.setCategories(categories);
@@ -95,18 +87,38 @@ public class CategoryManageActivity extends AppCompatActivity {
         });
     }
     
-    private void showAddCategoryDialog(Category parent) {
+    private void buildHierarchy() {
+        // 计算每个分类的层级
+        for (Category cat : categories) {
+            cat.setLevel(calculateLevel(cat));
+        }
+    }
+    
+    private int calculateLevel(Category category) {
+        int level = 0;
+        Long parentId = category.getParentId();
+        while (parentId != null) {
+            level++;
+            // 查找父分类
+            for (Category cat : categories) {
+                if (cat.getId() == parentId) {
+                    parentId = cat.getParentId();
+                    break;
+                }
+            }
+            // 防止无限循环
+            if (level > 10) break;
+        }
+        return level;
+    }
+    
+    private void showAddCategoryDialog(Category parent, int level) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(parent == null ? "添加一级分类" : "添加二级分类");
+        String title = parent == null ? "添加根分类" : "添加子分类到 \"" + parent.getName() + "\"";
+        builder.setTitle(title);
         
         View view = LayoutInflater.from(this).inflate(R.layout.dialog_add_category, null);
         EditText etName = view.findViewById(R.id.et_name);
-        
-        if (parent != null) {
-            TextView tvParent = view.findViewById(R.id.tv_parent);
-            tvParent.setText("父分类: " + parent.getName());
-            tvParent.setVisibility(View.VISIBLE);
-        }
         
         builder.setView(view);
         builder.setPositiveButton("添加", (dialog, which) -> {
@@ -128,9 +140,9 @@ public class CategoryManageActivity extends AppCompatActivity {
                 Category category = new Category();
                 category.setName(name);
                 category.setType(type);
-                category.setLevel(parent == null ? 1 : 2);
-                category.setParentId(parent == null ? 0 : parent.getId());
+                category.setParentId(parent == null ? null : parent.getId());
                 category.setColor(parent == null ? generateColor() : parent.getColor());
+                category.setLevel(parent == null ? 0 : calculateLevel(parent) + 1);
                 
                 AppDatabase.getInstance(this).categoryDao().insert(category);
                 
@@ -148,28 +160,25 @@ public class CategoryManageActivity extends AppCompatActivity {
     }
     
     private void showCategoryOptions(Category category) {
+        String[] options;
+        if (category.getLevel() < 5) {  // 最多5级
+            options = new String[]{"添加子分类", "编辑", "删除"};
+        } else {
+            options = new String[]{"编辑", "删除"};
+        }
+        
         new AlertDialog.Builder(this)
             .setTitle(category.getName())
-            .setItems(new String[]{"添加子分类", "编辑", "删除"}, (dialog, which) -> {
-                if (which == 0) {
-                    showAddCategoryDialog(category);
-                } else if (which == 1) {
-                    showEditDialog(category);
-                } else if (which == 2) {
-                    confirmDelete(category);
-                }
-            })
-            .show();
-    }
-    
-    private void showEditDeleteOptions(Category category) {
-        new AlertDialog.Builder(this)
-            .setTitle(category.getName())
-            .setItems(new String[]{"编辑", "删除"}, (dialog, which) -> {
-                if (which == 0) {
-                    showEditDialog(category);
-                } else if (which == 1) {
-                    confirmDelete(category);
+            .setItems(options, (dialog, which) -> {
+                if (category.getLevel() < 5 && which == 0) {
+                    showAddCategoryDialog(category, category.getLevel() + 1);
+                } else {
+                    int offset = category.getLevel() < 5 ? 1 : 0;
+                    if (which == offset) {
+                        showEditDialog(category);
+                    } else if (which == offset + 1) {
+                        confirmDelete(category);
+                    }
                 }
             })
             .show();
@@ -217,9 +226,7 @@ public class CategoryManageActivity extends AppCompatActivity {
         new AlertDialog.Builder(this)
             .setTitle("确认删除")
             .setMessage("确定要删除分类 \"" + category.getName() + "\" 吗？\n\n注意：删除分类将同时删除该分类下的所有子分类和话术！")
-            .setPositiveButton("删除", (dialog, which) -> {
-                deleteCategory(category);
-            })
+            .setPositiveButton("删除", (dialog, which) -> deleteCategory(category))
             .setNegativeButton("取消", null)
             .show();
     }
@@ -258,7 +265,6 @@ public class CategoryManageActivity extends AppCompatActivity {
         
         private List<Category> data = new ArrayList<>();
         private OnCategoryClickListener clickListener;
-        private OnCategoryLongClickListener longClickListener;
         
         public void setCategories(List<Category> categories) {
             this.data = categories;
@@ -267,10 +273,6 @@ public class CategoryManageActivity extends AppCompatActivity {
         
         public void setOnCategoryClickListener(OnCategoryClickListener listener) {
             this.clickListener = listener;
-        }
-        
-        public void setOnCategoryLongClickListener(OnCategoryLongClickListener listener) {
-            this.longClickListener = listener;
         }
         
         @NonNull
@@ -286,29 +288,19 @@ public class CategoryManageActivity extends AppCompatActivity {
             Category category = data.get(position);
             holder.tvName.setText(category.getName());
             
-            if (category.getLevel() == 1) {
-                holder.tvLevel.setText("一级");
-                holder.tvLevel.setBackgroundColor(Color.parseColor(category.getColor()));
-                holder.tvLevel.setTextColor(Color.WHITE);
-                holder.viewIndent.setVisibility(View.GONE);
-            } else {
-                holder.tvLevel.setText("二级");
-                holder.tvLevel.setBackgroundColor(Color.LTGRAY);
-                holder.tvLevel.setTextColor(Color.DKGRAY);
-                holder.viewIndent.setVisibility(View.VISIBLE);
-            }
+            // 根据层级设置缩进
+            int indent = category.getLevel() * 32;
+            holder.viewIndent.setLayoutParams(new LinearLayout.LayoutParams(indent, 1));
+            
+            // 显示层级
+            holder.tvLevel.setText("L" + (category.getLevel() + 1));
+            holder.tvLevel.setBackgroundColor(Color.parseColor(category.getColor()));
+            holder.tvLevel.setTextColor(Color.WHITE);
             
             holder.itemView.setOnClickListener(v -> {
                 if (clickListener != null) {
-                    clickListener.onClick(category);
+                    clickListener.onClick(category, position);
                 }
-            });
-            
-            holder.itemView.setOnLongClickListener(v -> {
-                if (longClickListener != null) {
-                    return longClickListener.onLongClick(category);
-                }
-                return false;
             });
         }
         
@@ -331,10 +323,6 @@ public class CategoryManageActivity extends AppCompatActivity {
     }
     
     interface OnCategoryClickListener {
-        void onClick(Category category);
-    }
-    
-    interface OnCategoryLongClickListener {
-        boolean onLongClick(Category category);
+        void onClick(Category category, int position);
     }
 }

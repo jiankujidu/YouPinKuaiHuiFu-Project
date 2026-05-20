@@ -22,6 +22,9 @@ import com.youpin.quickreply.R;
 import com.youpin.quickreply.database.AppDatabase;
 import com.youpin.quickreply.model.Category;
 import com.youpin.quickreply.model.Phrase;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -32,7 +35,6 @@ public class PhraseEditActivity extends AppCompatActivity {
     private static final int REQUEST_IMAGE_PICK = 1001;
     private static final int REQUEST_FILE_PICK = 1002;
     
-    // 视图组件
     private RadioGroup rgType;
     private Spinner spinnerLevel1;
     private Spinner spinnerLevel2;
@@ -42,7 +44,6 @@ public class PhraseEditActivity extends AppCompatActivity {
     private Button btnSaveBottom;
     private ImageButton btnBack;
     
-    // 数据
     private ExecutorService executor;
     private long phraseId = -1;
     private String defaultType = "company";
@@ -62,20 +63,14 @@ public class PhraseEditActivity extends AppCompatActivity {
         initViews();
         setupListeners();
         
-        // 获取传入参数
         phraseId = getIntent().getLongExtra("phrase_id", -1);
         defaultType = getIntent().getStringExtra("type");
         if (defaultType == null) defaultType = "company";
         
-        // 设置类型
         setTypeSelection(defaultType);
-        
-        // 加载分类数据
         loadCategories();
         
-        // 如果是编辑模式，加载数据
         if (phraseId != -1) {
-            setTitle("编辑话术");
             loadPhrase();
         }
     }
@@ -96,50 +91,35 @@ public class PhraseEditActivity extends AppCompatActivity {
         btnSave.setOnClickListener(v -> savePhrase());
         btnSaveBottom.setOnClickListener(v -> savePhrase());
         
-        // 类型改变时重新加载分类
-        rgType.setOnCheckedChangeListener((group, checkedId) -> {
-            loadCategories();
-        });
+        rgType.setOnCheckedChangeListener((group, checkedId) -> loadCategories());
         
-        // 一级分类选择监听
         spinnerLevel1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (position >= 0 && position < level1Categories.size()) {
-                    selectedLevel1 = level1Categories.get(position);
+                if (position > 0 && position <= level1Categories.size()) {
+                    selectedLevel1 = level1Categories.get(position - 1);
                     loadLevel2Categories(selectedLevel1.getId());
                 }
             }
-            
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {}
+            @Override public void onNothingSelected(AdapterView<?> parent) {}
         });
         
-        // 二级分类选择监听
         spinnerLevel2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (position >= 0 && position < level2Categories.size()) {
-                    selectedLevel2 = level2Categories.get(position);
+                if (position > 0 && position <= level2Categories.size()) {
+                    selectedLevel2 = level2Categories.get(position - 1);
                 }
             }
-            
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {}
+            @Override public void onNothingSelected(AdapterView<?> parent) {}
         });
     }
     
     private void setTypeSelection(String type) {
         switch (type) {
-            case "company":
-                rgType.check(R.id.rb_company);
-                break;
-            case "team":
-                rgType.check(R.id.rb_team);
-                break;
-            default:
-                rgType.check(R.id.rb_private);
-                break;
+            case "company": rgType.check(R.id.rb_company); break;
+            case "team": rgType.check(R.id.rb_team); break;
+            default: rgType.check(R.id.rb_private); break;
         }
     }
     
@@ -152,35 +132,22 @@ public class PhraseEditActivity extends AppCompatActivity {
     
     private void loadCategories() {
         String type = getSelectedType();
-        
         executor.execute(() -> {
             try {
                 AppDatabase db = AppDatabase.getInstance(this);
                 level1Categories = db.categoryDao().getLevel1Categories(type);
                 
                 runOnUiThread(() -> {
-                    // 设置一级分类下拉框
                     List<String> level1Names = new ArrayList<>();
                     level1Names.add("请选择一级分类");
-                    for (Category cat : level1Categories) {
-                        level1Names.add(cat.getName());
-                    }
+                    for (Category cat : level1Categories) level1Names.add(cat.getName());
                     
                     ArrayAdapter<String> adapter1 = new ArrayAdapter<>(this, 
                         android.R.layout.simple_spinner_item, level1Names);
                     adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     spinnerLevel1.setAdapter(adapter1);
-                    
-                    // 清空二级分类
-                    List<String> emptyList = new ArrayList<>();
-                    emptyList.add("请先选择一级分类");
-                    ArrayAdapter<String> emptyAdapter = new ArrayAdapter<>(this,
-                        android.R.layout.simple_spinner_item, emptyList);
-                    spinnerLevel2.setAdapter(emptyAdapter);
                 });
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            } catch (Exception e) { e.printStackTrace(); }
         });
     }
     
@@ -193,18 +160,14 @@ public class PhraseEditActivity extends AppCompatActivity {
                 runOnUiThread(() -> {
                     List<String> level2Names = new ArrayList<>();
                     level2Names.add("请选择二级分类");
-                    for (Category cat : level2Categories) {
-                        level2Names.add(cat.getName());
-                    }
+                    for (Category cat : level2Categories) level2Names.add(cat.getName());
                     
                     ArrayAdapter<String> adapter2 = new ArrayAdapter<>(this,
                         android.R.layout.simple_spinner_item, level2Names);
                     adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     spinnerLevel2.setAdapter(adapter2);
                 });
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            } catch (Exception e) { e.printStackTrace(); }
         });
     }
     
@@ -219,9 +182,7 @@ public class PhraseEditActivity extends AppCompatActivity {
                         setTypeSelection(phrase.getType());
                     });
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            } catch (Exception e) { e.printStackTrace(); }
         });
     }
     
@@ -229,7 +190,6 @@ public class PhraseEditActivity extends AppCompatActivity {
         String title = etTitle.getText().toString().trim();
         String content = etContent.getText().toString().trim();
         
-        // 验证输入
         if (title.isEmpty()) {
             Toast.makeText(this, "请输入话术标题", Toast.LENGTH_SHORT).show();
             etTitle.requestFocus();

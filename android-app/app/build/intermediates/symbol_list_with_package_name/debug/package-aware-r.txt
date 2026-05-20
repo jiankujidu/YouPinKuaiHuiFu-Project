@@ -3196,6 +3196,7 @@ id btn_add_level1
 id btn_back
 id btn_clear_cache
 id btn_manage_categories
+id btn_remove_attachment
 id btn_save
 id btn_save_bottom
 id btn_search
@@ -3344,6 +3345,7 @@ id jumpToEnd
 id jumpToStart
 id labeled
 id layout
+id layout_attachment
 id layout_attachments
 id layout_expanded
 id left

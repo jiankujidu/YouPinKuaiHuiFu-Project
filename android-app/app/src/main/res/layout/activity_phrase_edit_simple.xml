@@ -218,6 +218,79 @@
                     android:padding="12dp"
                     android:gravity="top|start"/>
 
+                <!-- 附件区域 -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="附件（可选）："
+                    android:textSize="14sp"
+                    android:textColor="#666666"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="8dp"/>
+
+                <LinearLayout
+                    android:id="@+id/layout_attachment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:id="@+id/iv_attachment_image"
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:scaleType="centerCrop"
+                        android:visibility="gone"/>
+
+                    <TextView
+                        android:id="@+id/tv_attachment_file"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="12dp"
+                        android:background="#F5F5F5"
+                        android:textColor="#333333"
+                        android:textSize="14sp"
+                        android:visibility="gone"/>
+
+                    <Button
+                        android:id="@+id/btn_remove_attachment"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:text="删除附件"
+                        android:textColor="#F5222D"
+                        android:textSize="14sp"
+                        android:background="#FFE6E6"
+                        android:layout_marginTop="8dp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="8dp">
+
+                    <Button
+                        android:id="@+id/btn_add_image"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:text="+ 添加图片"
+                        android:textColor="#07C160"
+                        android:textSize="14sp"
+                        android:background="#E6F7E6"
+                        android:layout_marginEnd="8dp"/>
+
+                    <Button
+                        android:id="@+id/btn_add_file"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:text="+ 添加文件"
+                        android:textColor="#1890FF"
+                        android:textSize="14sp"
+                        android:background="#E6F4FF"/>
+                </LinearLayout>
+
             </LinearLayout>
 
             <!-- 保存按钮 -->
